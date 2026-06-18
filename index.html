@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabemon</title>
+    <style>
+        /* 全体の基本スタイル */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f9f7e8; /* 淡い黄色/ベージュ */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* タイトルセクションのスタイル */
+        #title-page {
+            width: 100%;
+            height: 100vh; /* ビューポート全体を占める */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 垂直中央寄せ */
+            align-items: center; /* 水平中央寄せ */
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* メインタイトル（大きく表示） */
+        .main-title {
+            font-size: 8vw; /* ビューポート幅に対するパーセンテージでサイズ調整 */
+            margin-bottom: 10px;
+            line-height: 1.1;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* サブタイトル（英語） */
+        .subtitle {
+            font-size: 2vw;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* 画像のコンテナとレイアウト */
+        #image-gallery {
+            display: flex;
+            flex-wrap: wrap; /* 折り返しを可能にする */
+            justify-content: center; /* 中央寄せ */
+            gap: 15px; /* 画像間の隙間 */
+            padding: 20px 0;
+            max-width: 90%; /* 親要素からはみ出さないように制限 */
+        }
+
+        .gallery-image {
+            width: calc(33% - 10px); /* 3分割レイアウトを試みる (gapの半分を考慮) */
+            max-width: 250px; /* 最大幅を設定してレスポンシブ対応 */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            object-fit: cover; /* 画像がアスペクト比を保ちつつ領域を埋める */
+        }
+
+        /* ボタンのスタイル */
+        .selection-buttons button {
+            padding: 12px 30px;
+            margin: 10px 15px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #btn-japanese {
+            background-color: #e74c3c; /* 赤系 */
+            color: white;
+        }
+
+        #btn-english {
+            background-color: #2980b9; /* 青系 */
+            color: white;
+        }
+
+        .selection-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="title-page">
+        <!-- メインタイトル -->
+        <h1 class="main-title">たべもん</h1>
+        <p class="subtitle">Tabemon (Food Things)</p>
+
+        <!-- 画像ギャラリー -->
+        <div id="image-gallery">
+            <img src="https://tblg.k-img.com/restaurant/images/Rvw/204407/640x640_rect_a29d198acbb6b0373dbc006395e1f1c4.jpg" alt="神戸の食べ物イメージ 1" class="gallery-image">
+            <img src="https://cf-tp.furunavi.jp/travel/plan/4958/2/original/ri384kfg.jpg" alt="神戸の食べ物イメージ 2" class="gallery-image">
+            <!-- 3枚目の画像がないため、ここではスペースを空けるか、別の画像を想定します -->
+             <img src="https://tblg.k-img.com/restaurant/images/Rvw/204407/640x640_rect_a29d198acbb6b0373dbc006395e1f1c4.jpg" alt="神戸の食べ物イメージ 3 (Placeholder)" class="gallery-image">
+        </div>
+
+        <!-- 言語選択ボタン -->
+        <div class="selection-buttons">
+            <button id="btn-japanese">日本語で始める</button>
+            <button id="btn-english">English / 日本語で始める</button>
+        </div>
+    </div>
+
+    <script>
+        // ----------------------------------------------------------
+        // ★★★ ここから元のindex.htmlのロジックをここに組み込む必要があります ★★★
+        // ユーザーがボタンを押した後、このタイトルページ全体を隠し、
+        // 元の「チャットUI」を表示する処理が必要です。
+        // このコードブロックは構造変更に伴い、再構築が必要です。
+        // ----------------------------------------------------------
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const titlePage = document.getElementById('title-page');
+            const btnJapanese = document.getElementById('btn-japanese');
+            const btnEnglish = document.getElementById('btn-english');
+
+            // 仮の処理：ボタンが押されたら、タイトルページを隠し、メインアプリ（チャットUI）を表示するロジックが必要。
+            // 実際のアプリケーションでは、この遷移と同時に「元のindex.html」の内容に切り替える必要があります。
+
+            btnJapanese.addEventListener('click', () => {
+                alert("日本語モードで開始します。次のステップとして、メインのチャットインターフェースを表示する必要があります。");
+                // TODO: ここでタイトルページを非表示にし、既存のチャットUI要素（#app-containerなど）をアクティブにする処理が必要です。
+            });
+
+            btnEnglish.addEventListener('click', () => {
+                alert("英語/日本語モードで開始します。次のステップとして、メインのチャットインターフェースを表示する必要があります。");
+                // TODO: ここでタイトルページを非表示にし、既存のチャットUI要素（#app-containerなど）をアクティブにする処理が必要です。
+            });
+
+        });
+    </script>
+</body>
+</html>
