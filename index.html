@@ -1,1488 +1,1166 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Kobe Foodie Friend</title>
-        <style>
-            /* 全体の基本スタイル */
-            body {
-                font-family:
-                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                    "Helvetica Neue", Arial, sans-serif;
-                background-color: #f5f3e9; /* 神戸の街並みに馴染む落ち着いたアイボリー */
-                color: #333;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kobe Foodie Friend</title>
+    <style>
+        /* 全体の基本スタイル */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f3e9; /* 神戸の街並みに馴染む落ち着いたアイボリー */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-            /* スマートフォン風コンテナ */
+        /* スマートフォン風コンテナ */
+        .phone-container {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 850px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 6px solid #2c3e50; /* スマホベゼル風 */
+        }
+
+        @media (max-width: 500px) {
             .phone-container {
-                width: 100%;
-                max-width: 412px;
                 height: 100vh;
-                max-height: 850px;
-                background-color: #ffffff;
-                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-                border-radius: 24px;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                position: relative;
-                border: 6px solid #2c3e50; /* スマホベゼル風 */
+                max-height: 100vh;
+                border-radius: 0;
+                border: none;
             }
+        }
 
-            @media (max-width: 500px) {
-                .phone-container {
-                    height: 100vh;
-                    max-height: 100vh;
-                    border-radius: 0;
-                    border: none;
-                }
-            }
-
-            /* --------------------------------------------------
+        /* --------------------------------------------------
          * 1. タイトル・イントロ画面
          * -------------------------------------------------- */
-            #title-page {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: center;
-                text-align: center;
-                padding: 40px 24px;
-                box-sizing: border-box;
-                background: linear-gradient(135deg, #fdfbf7 0%, #f5f3e9 100%);
-                overflow-y: auto;
-            }
+        #title-page {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            padding: 40px 24px;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #fdfbf7 0%, #f5f3e9 100%);
+            overflow-y: auto;
+        }
 
-            .header-group {
-                margin-top: 20px;
-            }
+        .header-group {
+            margin-top: 20px;
+        }
 
-            .main-title {
-                font-size: 2.2rem;
-                color: #2c3e50;
-                margin: 0 0 4px 0;
-                font-weight: 800;
-                letter-spacing: -0.5px;
-            }
+        .main-title {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin: 0 0 4px 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
 
-            .subtitle {
-                font-size: 0.95rem;
-                color: #7f8c8d;
-                margin: 0;
-                font-weight: 500;
-            }
+        .subtitle {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            margin: 0;
+            font-weight: 500;
+        }
 
-            /* 画像ギャラリー */
-            #image-gallery {
-                display: flex;
-                justify-content: center;
-                gap: 12px;
-                margin: 30px 0;
-                width: 100%;
-            }
+        /* 画像ギャラリー */
+        #image-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px 0;
+            width: 100%;
+        }
 
-            .gallery-image {
-                width: calc(33% - 8px);
-                aspect-ratio: 1 / 1;
-                border-radius: 16px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-                object-fit: cover;
-                border: 2px solid #fff;
-                transition: transform 0.2s;
-            }
+        .gallery-image {
+            width: calc(33% - 8px);
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            object-fit: cover;
+            border: 2px solid #fff;
+            transition: transform 0.2s;
+        }
 
-            .gallery-image:hover {
-                transform: scale(1.05);
-            }
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
 
-            .welcome-text {
-                font-size: 0.9rem;
-                color: #555;
-                line-height: 1.6;
-                margin: 0 10px 20px 10px;
-                background: rgba(255, 255, 255, 0.7);
-                padding: 12px;
-                border-radius: 12px;
-                border-left: 4px solid #e74c3c;
-            }
+        .welcome-text {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.6;
+            margin: 0 10px 20px 10px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 4px solid #e74c3c;
+        }
 
-            /* 言語選択ボタン */
-            .selection-buttons {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                margin-bottom: 20px;
-            }
+        /* 言語選択ボタン */
+        .selection-buttons {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
 
-            .selection-buttons button {
-                width: 100%;
-                padding: 15px;
-                font-size: 1rem;
-                font-weight: 600;
-                border: none;
-                border-radius: 14px;
-                cursor: pointer;
-                transition:
-                    background-color 0.2s,
-                    transform 0.1s,
-                    box-shadow 0.2s;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-            }
+        .selection-buttons button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-            #btn-japanese {
-                background-color: #e74c3c; /* ポートタワーレッド */
-                color: white;
-            }
+        #btn-japanese {
+            background-color: #e74c3c; /* ポートタワーレッド */
+            color: white;
+        }
 
-            #btn-japanese:hover {
-                background-color: #c0392b;
-                box-shadow: 0 6px 12px rgba(231, 76, 60, 0.2);
-            }
+        #btn-japanese:hover {
+            background-color: #c0392b;
+            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.2);
+        }
 
-            #btn-english {
-                background-color: #2980b9; /* 神戸マリンブルー */
-                color: white;
-            }
+        #btn-english {
+            background-color: #2980b9; /* 神戸マリンブルー */
+            color: white;
+        }
 
-            #btn-english:hover {
-                background-color: #216f9e;
-                box-shadow: 0 6px 12px rgba(41, 128, 185, 0.2);
-            }
+        #btn-english:hover {
+            background-color: #216f9e;
+            box-shadow: 0 6px 12px rgba(41, 128, 185, 0.2);
+        }
 
-            .selection-buttons button:active {
-                transform: translateY(1px);
-            }
+        .selection-buttons button:active {
+            transform: translateY(1px);
+        }
 
-            /* --------------------------------------------------
+        /* --------------------------------------------------
          * 2. チャット画面
          * -------------------------------------------------- */
-            #chat-page {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                height: 100%;
-                background-color: #f8f9fa;
-            }
+        #chat-page {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f9fa;
+        }
 
-            /* チャットヘッダー */
-            .chat-header {
-                background-color: #2c3e50;
-                color: white;
-                padding: 14px 16px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            }
+        /* チャットヘッダー */
+        .chat-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-            .chat-header-title {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
+        .chat-header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-            .chat-avatar-mini {
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background-color: #e74c3c;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-weight: bold;
-                font-size: 0.8rem;
-                color: white;
-            }
+        .chat-avatar-mini {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: white;
+        }
 
-            .chat-header-info h2 {
-                margin: 0;
-                font-size: 0.95rem;
-                font-weight: 700;
-            }
+        .chat-header-info h2 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
 
-            .chat-header-info p {
-                margin: 0;
-                font-size: 0.75rem;
-                color: #bdc3c7;
-            }
+        .chat-header-info p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #bdc3c7;
+        }
 
-            .back-button {
-                background: none;
-                border: none;
-                color: white;
-                font-size: 1.1rem;
-                cursor: pointer;
-                padding: 4px 8px;
-                border-radius: 8px;
-                transition: background-color 0.2s;
-            }
+        .back-button, .settings-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            .back-button:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-            }
+        .back-button:hover, .settings-button:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
 
-            /* メッセージ表示エリア */
-            .chat-messages {
-                flex: 1;
-                padding: 16px;
-                overflow-y: auto;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                background-color: #f4f6f7;
-            }
+        /* メッセージ表示エリア */
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: #f4f6f7;
+        }
 
-            /* メッセージバブル */
-            .message {
-                display: flex;
-                align-items: flex-start;
-                gap: 8px;
-                max-width: 85%;
-            }
+        /* メッセージバブル */
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            max-width: 85%;
+        }
 
-            .message.bot {
-                align-self: flex-start;
-            }
+        .message.bot {
+            align-self: flex-start;
+        }
 
-            .message.user {
-                align-self: flex-end;
-                flex-direction: row-reverse;
-            }
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
 
-            .avatar {
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 1.1rem;
-                flex-shrink: 0;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            }
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
 
-            .bot .avatar {
-                background-color: #e74c3c;
-                color: white;
-            }
+        .bot .avatar {
+            background-color: #e74c3c;
+            color: white;
+        }
 
-            .user .avatar {
-                background-color: #2980b9;
-                color: white;
-            }
+        .user .avatar {
+            background-color: #2980b9;
+            color: white;
+        }
 
-            .bubble {
-                padding: 12px 16px;
-                border-radius: 18px;
-                font-size: 0.9rem;
-                line-height: 1.45;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            }
+        .bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
 
-            .bot .bubble {
-                background-color: white;
-                color: #2c3e50;
-                border-top-left-radius: 4px;
-                border: 1px solid #eef2f3;
-            }
+        .bot .bubble {
+            background-color: white;
+            color: #2c3e50;
+            border-top-left-radius: 4px;
+            border: 1px solid #eef2f3;
+        }
 
-            .user .bubble {
-                background-color: #2980b9;
-                color: white;
-                border-top-right-radius: 4px;
-            }
+        .user .bubble {
+            background-color: #2980b9;
+            color: white;
+            border-top-right-radius: 4px;
+        }
 
-            /* キーワード提案チップス */
-            .chips-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                margin-top: 8px;
-            }
+        /* キーワード提案チップス */
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
 
-            .chip {
-                background-color: #ebeef1;
-                color: #4f5f6f;
-                border: 1px solid #dcdfe3;
-                padding: 6px 12px;
-                border-radius: 20px;
-                font-size: 0.75rem;
-                cursor: pointer;
-                transition: all 0.2s;
-                font-weight: 500;
-            }
+        .chip {
+            background-color: #ebeef1;
+            color: #4f5f6f;
+            border: 1px solid #dcdfe3;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
 
-            .chip:hover {
-                background-color: #2980b9;
-                color: white;
-                border-color: #2980b9;
-            }
+        .chip:hover {
+            background-color: #2980b9;
+            color: white;
+            border-color: #2980b9;
+        }
 
-            /* 店舗カード表示 */
-            .shop-card {
-                background-color: white;
-                border-radius: 12px;
-                border: 1px solid #e1e8ed;
-                padding: 12px;
-                margin-top: 8px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            }
+        /* 店舗カード表示 */
+        .shop-card {
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid #e1e8ed;
+            padding: 12px;
+            margin-top: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
 
-            .shop-type-badge {
-                display: inline-block;
-                font-size: 0.65rem;
-                font-weight: bold;
-                padding: 2px 6px;
-                border-radius: 4px;
-                margin-bottom: 6px;
-                text-transform: uppercase;
-            }
+        .shop-type-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
 
-            .badge-noodles {
-                background-color: #ffeaa7;
-                color: #d63031;
-            }
-            .badge-meat {
-                background-color: #ffcbca;
-                color: #c0392b;
-            }
-            .badge-global {
-                background-color: #dfe6e9;
-                color: #2d3436;
-            }
-            .badge-sweet {
-                background-color: #fab1a0;
-                color: #e17055;
-            }
+        .badge-noodles { background-color: #ffeaa7; color: #d63031; }
+        .badge-meat { background-color: #ffcbca; color: #c0392b; }
+        .badge-global { background-color: #dfe6e9; color: #2d3436; }
+        .badge-sweet { background-color: #fab1a0; color: #e17055; }
 
-            .shop-name {
-                font-size: 0.95rem;
-                font-weight: bold;
-                margin: 0 0 4px 0;
-                color: #2c3e50;
-            }
+        .shop-name {
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin: 0 0 4px 0;
+            color: #2c3e50;
+        }
 
-            .shop-style {
-                font-size: 0.75rem;
-                color: #7f8c8d;
-                margin: 0 0 10px 0;
-            }
+        .shop-style {
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            margin: 0 0 10px 0;
+        }
 
-            .shop-link {
-                display: inline-flex;
-                align-items: center;
-                gap: 4px;
-                font-size: 0.75rem;
-                color: #2980b9;
-                text-decoration: none;
-                font-weight: 600;
-            }
+        .shop-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 600;
+        }
 
-            .shop-link:hover {
-                text-decoration: underline;
-            }
+        .shop-link:hover {
+            text-decoration: underline;
+        }
 
-            /* チャットフッター入力エリア */
-            .chat-input-area {
-                padding: 12px 16px;
-                background-color: white;
-                border-top: 1px solid #eaeaea;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
+        /* チャットフッター入力エリア */
+        .chat-input-area {
+            padding: 12px 16px;
+            background-color: white;
+            border-top: 1px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-            .chat-input {
-                flex: 1;
-                border: 1px solid #dcdfe3;
-                border-radius: 20px;
-                padding: 10px 16px;
-                font-size: 0.85rem;
-                outline: none;
-                transition: border-color 0.2s;
-            }
+        .chat-input {
+            flex: 1;
+            border: 1px solid #dcdfe3;
+            border-radius: 20px;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
 
-            .chat-input:focus {
-                border-color: #2980b9;
-            }
+        .chat-input:focus {
+            border-color: #2980b9;
+        }
 
-            .send-button {
-                background-color: #2980b9;
-                color: white;
-                border: none;
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                cursor: pointer;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                transition: background-color 0.2s;
-                flex-shrink: 0;
-            }
+        .send-button {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.2s;
+            flex-shrink: 0;
+        }
 
-            .send-button:hover {
-                background-color: #216f9e;
-            }
+        .send-button:hover {
+            background-color: #216f9e;
+        }
 
-            .send-button svg {
-                width: 16px;
-                height: 16px;
-                fill: currentColor;
-                transform: translateX(1px);
-            }
-        </style>
-    </head>
-    <body>
-        <div class="phone-container">
-            <!-- ==================================================
+        .send-button svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            transform: translateX(1px);
+        }
+
+        /* --------------------------------------------------
+         * 3. セキュリティ設定・APIキーセットアップモーダル（フォールバック用）
+         * -------------------------------------------------- */
+        .setup-modal {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 62, 80, 0.95);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            box-sizing: border-box;
+            color: white;
+            text-align: center;
+        }
+
+        .setup-card {
+            background-color: #ffffff;
+            color: #333333;
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+
+        .setup-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .setup-desc {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .key-input-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .key-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .key-input:focus {
+            border-color: #2980b9;
+        }
+
+        .setup-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .setup-btn:hover {
+            background-color: #216f9e;
+        }
+
+        /* 読み込みローダー表示 */
+        .ai-loading-bubble {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        .loader-dots span {
+            animation: blink 1.4s infinite both;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .loader-dots span:nth-child(2) { animation-delay: .2s; }
+        .loader-dots span:nth-child(3) { animation-delay: .4s; }
+
+        @keyframes blink {
+            0% { opacity: .2; }
+            20% { opacity: 1; }
+            100% { opacity: .2; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-container">
+        
+        <!-- ==================================================
              1. タイトルページ（LP風）
              ================================================== -->
-            <div id="title-page">
-                <div class="header-group">
-                    <h1 class="main-title">たべもん</h1>
-                    <p class="subtitle">Kobe Foodie Friend</p>
-                </div>
-
-                <!-- 画像ギャラリー -->
-                <div id="image-gallery">
-                    <img
-                        src="https://tblg.k-img.com/restaurant/images/Rvw/204407/640x640_rect_a29d198acbb6b0373dbc006395e1f1c4.jpg"
-                        alt="神戸グルメ 1"
-                        class="gallery-image"
-                    />
-                    <img
-                        src="https://cf-tp.furunavi.jp/travel/plan/4958/2/original/ri384kfg.jpg"
-                        alt="神戸グルメ 2"
-                        class="gallery-image"
-                    />
-                    <img
-                        src="https://tblg.k-img.com/restaurant/images/Rvw/204407/640x640_rect_a29d198acbb6b0373dbc006395e1f1c4.jpg"
-                        alt="神戸グルメ 3"
-                        class="gallery-image"
-                    />
-                </div>
-
-                <!-- ガイドメッセージ -->
-                <div class="welcome-text">
-                    神戸の厳選50店舗から、今のあなたの「気分」や「感情」にピッタリな美味しい出会いを提案します。言葉にならない「なんとなく」を教えてください。<br />
-                    <small
-                        style="display: block; margin-top: 5px; color: #7f8c8d"
-                        >We help you find the perfect restaurant in Kobe based
-                        on your current vibe, feeling or mood.</small
-                    >
-                </div>
-
-                <!-- 言語選択ボタン -->
-                <div class="selection-buttons">
-                    <button id="btn-japanese">
-                        <span>🇯🇵</span> 日本語で始める
-                    </button>
-                    <button id="btn-english">
-                        <span>🇬🇧 / 🇯🇵</span> English / 日本語で始める
-                    </button>
-                </div>
+        <div id="title-page">
+            <div class="header-group">
+                <h1 class="main-title">たべもん</h1>
+                <p class="subtitle">Kobe Foodie Friend</p>
             </div>
 
-            <!-- ==================================================
-             2. 対話型チャットページ
-             ================================================== -->
-            <div id="chat-page">
-                <!-- チャットヘッダー -->
-                <div class="chat-header">
-                    <button class="back-button" id="btn-back" title="戻る">
-                        ←
-                    </button>
-                    <div class="chat-header-title">
-                        <div class="chat-avatar-mini" id="header-avatar">
-                            KF
-                        </div>
-                        <div class="chat-header-info">
-                            <h2 id="header-title">Kobe Foodie Friend</h2>
-                            <p id="header-status">Online • Agent</p>
-                        </div>
-                    </div>
-                    <div style="width: 28px"></div>
-                    <!-- バランスを取るためのスペース -->
-                </div>
+            <!-- 画像ギャラリー -->
+            <div id="image-gallery">
+                <img src="https://tblg.k-img.com/restaurant/images/Rvw/204407/640x640_rect_a29d198acbb6b0373dbc006395e1f1c4.jpg" alt="神戸グルメ 1" class="gallery-image">
+                <img src="https://cf-tp.furunavi.jp/travel/plan/4958/2/original/ri384kfg.jpg" alt="神戸グルメ 2" class="gallery-image">
+                <img src="https://tblg.k-img.com/restaurant/images/Rvw/204407/640x640_rect_a29d198acbb6b0373dbc006395e1f1c4.jpg" alt="神戸グルメ 3" class="gallery-image">
+            </div>
 
-                <!-- チャット履歴表示エリア -->
-                <div class="chat-messages" id="chat-messages">
-                    <!-- 動的にメッセージが追加されます -->
-                </div>
+            <!-- ガイドメッセージ -->
+            <div class="welcome-text">
+                神戸の厳選50店舗から、今のあなたの「気分」や「感情」にピッタリな美味しい出会いを提案します。言葉にならない「なんとなく」を教えてください。<br>
+                <small style="display:block; margin-top:5px; color:#7f8c8d;">We help you find the perfect restaurant in Kobe based on your current vibe, feeling or mood.</small>
+            </div>
 
-                <!-- チャット入力エリア -->
-                <div class="chat-input-area">
-                    <input
-                        type="text"
-                        class="chat-input"
-                        id="chat-input"
-                        placeholder="メッセージを入力..."
-                        autocomplete="off"
-                    />
-                    <button class="send-button" id="btn-send" title="送信">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                        </svg>
-                    </button>
-                </div>
+            <!-- 言語選択ボタン -->
+            <div class="selection-buttons">
+                <button id="btn-japanese">
+                    <span>🇯🇵</span> 日本語で始める
+                </button>
+                <button id="btn-english">
+                    <span>🇬🇧 / 🇯🇵</span> English / 日本語で始める
+                </button>
             </div>
         </div>
 
-        <script>
-            // ==================================================
-            // ★ 店舗データベース (厳選50店舗を完全搭載)
-            // ==================================================
-            const kobeShops = [
-                // --- NOODLES (18店舗) ---
-                {
-                    Name: "Metro Ramen",
-                    Style: "Ramen (Light Duck Broth)",
-                    MapLink: "http://maps.google.com/?q=Metro+Ramen+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Mokkosu (Sannomiya Honten)",
-                    Style: "Ramen (Heavy Soy-Tonkotsu & Mountain of Pork)",
-                    MapLink: "http://maps.google.com/?q=Mokkosu+Sannomiya+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Taro (Sannomiya)",
-                    Style: "Ramen (Rich Tonkotsu with free unlimited Kimchi)",
-                    MapLink:
-                        "http://maps.google.com/?q=Ramen+Taro+Sannomiya+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Gyoza no Mise Hyotan (Sannomiya)",
-                    Style: "Gyoza (Legendary Miso Sauce Dumplings)",
-                    MapLink:
-                        "http://maps.google.com/?q=Gyoza+no+Mise+Hyotan+Sannomiya",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Gyoza no Mise Hyotan (Motomachi)",
-                    Style: "Gyoza (Legendary Miso Sauce Dumplings)",
-                    MapLink:
-                        "http://maps.google.com/?q=Gyoza+no+Mise+Hyotan+Motomachi",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Koba",
-                    Style: "Ramen (Local Sannomiya Shoyu Ramen)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Koba+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Tsukado",
-                    Style: "Ramen (Thick Seafood Tonkotsu Tsukemen)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Tsukado+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Kanda",
-                    Style: "Ramen (Classic Shio Ramen)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Kanda+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Genpei",
-                    Style: "Ramen (Spicy Garlic Ramen)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Genpei+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Suzume",
-                    Style: "Ramen (Rich Chicken Paitan)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Suzume+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Ippudo (Sannomiya)",
-                    Style: "Ramen (Globally famous Hakata Tonkotsu)",
-                    MapLink: "http://maps.google.com/?q=Ippudo+Sannomiya+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Daiki",
-                    Style: "Ramen (Light Chicken Broth with Wontons)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Daiki+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Shisen",
-                    Style: "Ramen (Fiery Tantanmen with sesame paste)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Shisen+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Santouka (Sannomiya)",
-                    Style: "Ramen (Hokkaido Shio Ramen with pickled plum)",
-                    MapLink:
-                        "http://maps.google.com/?q=Santouka+Sannomiya+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Ichiran (Sannomiya)",
-                    Style: "Ramen (Classic Tonkotsu in individual booths)",
-                    MapLink: "http://maps.google.com/?q=Ichiran+Sannomiya+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Tsukemen Kurabito",
-                    Style: "Ramen (Rich Fish and Pork Broth Dipping Noodles)",
-                    MapLink: "http://maps.google.com/?q=Tsukemen+Kurabito+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Masaya",
-                    Style: "Ramen (Miso-based Ramen with spicy options)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Masaya+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
-                {
-                    Name: "Ramen Kotan",
-                    Style: "Ramen (Traditional Soy Sauce Ramen)",
-                    MapLink: "http://maps.google.com/?q=Ramen+Kotan+Kobe",
-                    Type: "Noodles",
-                    Feelings_EN:
-                        "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding",
-                    Feelings_JA:
-                        "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり",
-                },
+        <!-- ==================================================
+             2. 对話型チャットページ
+             ================================================== -->
+        <div id="chat-page">
+            <!-- チャットヘッダー -->
+            <div class="chat-header">
+                <button class="back-button" id="btn-back" title="戻る">←</button>
+                <div class="chat-header-title">
+                    <div class="chat-avatar-mini" id="header-avatar">KF</div>
+                    <div class="chat-header-info">
+                        <h2 id="header-title">Kobe Foodie Friend</h2>
+                        <p id="header-status">Online • Agent</p>
+                    </div>
+                </div>
+                <button class="settings-button" id="btn-settings" title="API接続設定">⚙️</button>
+            </div>
 
-                // --- MEAT (12店舗) ---
-                {
-                    Name: "Kobe Beef Kaiseki Ishida",
-                    Style: "Kobe Beef Kaiseki (Multi-course traditional beef dinner)",
-                    MapLink:
-                        "http://maps.google.com/?q=Kobe+Beef+Kaiseki+Ishida",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Kobe Beef Steak Ishida (Sannomiya Honten)",
-                    Style: "Kobe Beef Teppanyaki (Premium teppanyaki steak experience)",
-                    MapLink:
-                        "http://maps.google.com/?q=Kobe+Beef+Steak+Ishida+Sannomiya",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Steak Aoyama",
-                    Style: "Kobe Beef Teppanyaki (Warm family-run shop serving high-grade beef)",
-                    MapLink: "http://maps.google.com/?q=Steak+Aoyama+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Misono Kobe Honten",
-                    Style: "Kobe Beef Teppanyaki (The birthplace of Teppanyaki steak)",
-                    MapLink: "http://maps.google.com/?q=Misono+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Wakkoqu (Shin-Kobe Honten)",
-                    Style: "Kobe Beef Teppanyaki (Exquisite beef cooked with rock salt and pepper)",
-                    MapLink: "http://maps.google.com/?q=Wakkoqu+Shin+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Steak Land Kobe (Sannomiya)",
-                    Style: "Kobe Beef Teppanyaki (Lively and casual teppanyaki at accessible prices)",
-                    MapLink: "http://maps.google.com/?q=Steak+Land+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Gyushige (Sannomiya)",
-                    Style: "Yakiniku (High-quality all-you-can-eat Japanese BBQ)",
-                    MapLink:
-                        "http://maps.google.com/?q=Gyushige+Sannomiya+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Kobe Gyukatsu Motomachi",
-                    Style: "Gyukatsu (Crispy deep-fried rare beef cutlet with dipping stones)",
-                    MapLink:
-                        "http://maps.google.com/?q=Kobe+Gyukatsu+Motomachi",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Red Rock (Sannomiya Honten)",
-                    Style: "Roast Beef Bowl (Towering roast beef and steak bowls with creamy sauce)",
-                    MapLink:
-                        "http://maps.google.com/?q=Red+Rock+Sannomiya+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Steak House Medium Rare (Kobe Oriental Hotel)",
-                    Style: "Kobe Beef Teppanyaki (Sleek hotel dining with harbor views)",
-                    MapLink:
-                        "http://maps.google.com/?q=Steak+House+Medium+Rare+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Kobe Beef Tajima",
-                    Style: "Kobe Beef Steak (Intimate steakhouse focusing on premium Tajima beef cuts)",
-                    MapLink: "http://maps.google.com/?q=Kobe+Beef+Tajima+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
-                {
-                    Name: "Steak Sakura",
-                    Style: "Kobe Beef Teppanyaki (Artistic presentation of A5 beef in a elegant interior)",
-                    MapLink: "http://maps.google.com/?q=Steak+Sakura+Kobe",
-                    Type: "Meat",
-                    Feelings_EN:
-                        "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration",
-                    Feelings_JA:
-                        "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい",
-                },
+            <!-- チャット履歴表示エリア -->
+            <div class="chat-messages" id="chat-messages">
+                <!-- 動的にメッセージが追加されます -->
+            </div>
 
-                // --- GLOBAL (10店舗) ---
-                {
-                    Name: "Kobe Moorish Cafe",
-                    Style: "Mediterranean Cuisine (Chic cafe serving Spanish tapas and Moroccan tagines)",
-                    MapLink: "http://maps.google.com/?q=Kobe+Moorish+Cafe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "Cafe de Paris (Kitano)",
-                    Style: "French Bistro (Colorful French terrace in the historic Kitano Ijinkan district)",
-                    MapLink: "http://maps.google.com/?q=Cafe+de+Paris+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "Naan & Curry Ganesh",
-                    Style: "Indian Restaurant (Famous for giant buttery garlic naan and rich butter chicken)",
-                    MapLink: "http://maps.google.com/?q=Ganesh+Indian+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "Thali Indian Restaurant",
-                    Style: "Indian Curry (Authentic thali platters with spicy vegetable curries)",
-                    MapLink: "http://maps.google.com/?q=Thali+Indian+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "Xiang Jiang Chinese Restaurant",
-                    Style: "Chinese Cuisine (Elegant Cantonese dim sum and mapo tofu)",
-                    MapLink: "http://maps.google.com/?q=Xiang+Jiang+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "Kobe Chinatown Xiang Jiang",
-                    Style: "Chinese Street Food (Authentic pork buns and pan-fried dumplings)",
-                    MapLink: "http://maps.google.com/?q=Kobe+Chinatown+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "Ali’s Halal Kitchen",
-                    Style: "Halal Pakistani Cuisine (Delicious lamb biryani and robust chicken karahi)",
-                    MapLink: "http://maps.google.com/?q=Ali+Halal+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "L’Ami (French-style bistro)",
-                    Style: "洋食 Yoshoku (Famous for its fluffy demi-glace omurice and crab croquettes)",
-                    MapLink: "http://maps.google.com/?q=LAmi+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "Royal Moti (Indian)",
-                    Style: "Indian Curry (Vibrant halal Indian dining with tandoori platters)",
-                    MapLink: "http://maps.google.com/?q=Royal+Moti+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
-                {
-                    Name: "Persia Restaurant",
-                    Style: "Persian Cuisine (Flavorful saffron rice and skewered beef/chicken kebabs)",
-                    MapLink: "http://maps.google.com/?q=Persia+Restaurant+Kobe",
-                    Type: "Global",
-                    Feelings_EN:
-                        "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating",
-                    Feelings_JA:
-                        "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜",
-                },
+            <!-- チャット入力エリア -->
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chat-input" placeholder="メッセージを入力..." autocomplete="off">
+                <button class="send-button" id="btn-send" title="送信">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
 
-                // --- SWEET (10店舗) ---
-                {
-                    Name: "Tooth Tooth Maison 15th",
-                    Style: "Patisserie & Cafe (Elegant French pastries in an official National Important Cultural Property)",
-                    MapLink:
-                        "http://maps.google.com/?q=Tooth+Tooth+Maison+15th",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "L'Avenue",
-                    Style: "Chocolatier & Patisserie (World-class chocolates and complex cakes by a master pastry chef)",
-                    MapLink: "http://maps.google.com/?q=LAvenue+Kobe",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "Patisserie Mont Plus",
-                    Style: "French Patisserie (Authentic French cakes with delicate sponge layers and fruit tarts)",
-                    MapLink: "http://maps.google.com/?q=Mont+Plus+Kobe",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "Caffera (Daimaru Kobe)",
-                    Style: "Italian Cafe (Historic open-air terrace famous for its barista-art caffe lattes)",
-                    MapLink: "http://maps.google.com/?q=Caffera+Kobe",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "Nishimura Coffee (Nakayamate Honten)",
-                    Style: "Historic Coffeehouse (Kobe institution serving premium hand-dripped coffee in a European brick villa)",
-                    MapLink:
-                        "http://maps.google.com/?q=Nishimura+Coffee+Nakayamate",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "Blue Bottle Coffee Kobe",
-                    Style: "Modernist Cafe (Minimalist high-ceiling cafe serving freshly roasted single-origin pour overs)",
-                    MapLink:
-                        "http://maps.google.com/?q=Blue+Bottle+Coffee+Kobe",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "Frantz Harborland Kobe",
-                    Style: "Sweet Souvenirs (Famous for the 'Kobe Magic Pot Pudding'—creamy custard with bitter caramel)",
-                    MapLink: "http://maps.google.com/?q=Frantz+Harborland+Kobe",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "Boulangerie Comme Chinois",
-                    Style: "Bakery Pastries (Gourmet sweet pastries and light, flaky croissants)",
-                    MapLink: "http://maps.google.com/?q=Comme+Chinois+Kobe",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "Motomachi Cake (元町ケーキ)",
-                    Style: "Classic Cakes (Famous for 'Zakuro'—fluffy sponge cake with fresh cream and strawberries)",
-                    MapLink: "http://maps.google.com/?q=Motomachi+Cake+Kobe",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-                {
-                    Name: "Ashiya Purny (Kobe Daichiku)",
-                    Style: "Gelato (Boutique spot serving smooth, artisanal gelato made with local dairy)",
-                    MapLink: "http://maps.google.com/?q=Ashiya+Purny+Kobe",
-                    Type: "Sweet",
-                    Feelings_EN:
-                        "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward",
-                    Feelings_JA:
-                        "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい",
-                },
-            ];
+        <!-- ==================================================
+             3. セキュア接続モーダル（ブラウザ制限・フォールバック用）
+             ================================================== -->
+        <div class="setup-modal" id="setup-modal">
+            <div class="setup-card">
+                <h3 class="setup-title">🔒 APIキー接続セットアップ</h3>
+                <p class="setup-desc">
+                    ブラウザのセキュリティ制限により標準ポップアップがブロックされたため、こちらのセーフモード入力画面を表示しています。キーはお使いのブラウザ（ローカルストレージ）にのみ保存されます。
+                </p>
+                <div class="key-input-wrapper">
+                    <input type="password" class="key-input" id="user-api-key" placeholder="APIキーを入力してください">
+                </div>
+                <button class="setup-btn" id="btn-save-key">接続してチャットを始める</button>
+                <button class="setup-btn" id="btn-skip-key" style="margin-top: 10px; background-color: #bdc3c7; color: #333333;">キーなしで試す（ローカル検索）</button>
+            </div>
+        </div>
 
-            // 感情マッピング用のキーワード定義（要件定義書 4.1に準拠）
-            const categoryMapping = {
-                Noodles: {
-                    en: [
-                        "mindless eating",
-                        "low energy",
-                        "worn out",
-                        "fast comfort",
-                        "solo dining",
-                        "low-key",
-                        "rewinding",
-                        "noodles",
-                        "ramen",
-                        "gyoza",
-                    ],
-                    ja: [
-                        "サクッと",
-                        "一人飯",
-                        "疲れ気味",
-                        "気軽に",
-                        "深夜の贅沢",
-                        "手軽に済ませたい",
-                        "ほっこり",
-                        "ラーメン",
-                        "らーめん",
-                        "餃子",
-                        "ぎょうざ",
-                        "麺",
-                    ],
-                },
-                Meat: {
-                    en: [
-                        "indulgent",
-                        "feast mode",
-                        "treat myself",
-                        "high spirit",
-                        "cheat day",
-                        "sensory overload",
-                        "upscale",
-                        "celebration",
-                        "meat",
-                        "beef",
-                        "steak",
-                        "yakiniku",
-                    ],
-                    ja: [
-                        "がっつり",
-                        "ご褒美",
-                        "テンション高い",
-                        "特別な日",
-                        "贅沢したい",
-                        "お祝い",
-                        "精力をつけたい",
-                        "肉",
-                        "ビーフ",
-                        "ステーキ",
-                        "焼肉",
-                        "牛かつ",
-                        "がっつり",
-                    ],
-                },
-                Global: {
-                    en: [
-                        "adventurous",
-                        "breaking the routine",
-                        "bold cravings",
-                        "vibrant night",
-                        "lively atmosphere",
-                        "escape",
-                        "stimulating",
-                        "global",
-                        "curry",
-                        "french",
-                        "chinese",
-                        "halal",
-                        "spicy",
-                    ],
-                    ja: [
-                        "刺激が欲しい",
-                        "いつもと違う味",
-                        "異国情緒",
-                        "冒険心",
-                        "ワクワクしたい",
-                        "賑やかな夜",
-                        "カレー",
-                        "洋食",
-                        "中華",
-                        "ハラール",
-                        "フランス",
-                        "スパイシー",
-                        "辛い",
-                    ],
-                },
-                Sweet: {
-                    en: [
-                        "emotional rescue",
-                        "mental fatigue",
-                        "sweet escape",
-                        "cozy afternoon",
-                        "slow pace",
-                        "aically pleasing",
-                        "unearned reward",
-                        "sweet",
-                        "dessert",
-                        "cake",
-                        "coffee",
-                        "cafe",
-                        "chocolate",
-                    ],
-                    ja: [
-                        "しょんぼり",
-                        "ストレス解消",
-                        "別腹",
-                        "自分を甘やかす",
-                        "映えスイーツ",
-                        "優雅な午後",
-                        "癒やされたい",
-                        "甘い",
-                        "スイーツ",
-                        "ケーキ",
-                        "カフェ",
-                        "珈琲",
-                        "コーヒー",
-                        "チョコレート",
-                        "おやつ",
-                    ],
-                },
-            };
+    </div>
 
-            // アプリケーションの状態管理
-            let currentLang = "ja"; // 'ja' または 'en'
+    <script>
+        // ==================================================
+        // ★ 店舗データベース (厳選50店舗を完全搭載)
+        // ==================================================
+        const kobeShops = [
+            // --- NOODLES (18店舗) ---
+            { Name: "Metro Ramen", Style: "Ramen (Light Duck Broth)", MapLink: "http://maps.google.com/?q=Metro+Ramen+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Mokkosu (Sannomiya Honten)", Style: "Ramen (Heavy Soy-Tonkotsu & Mountain of Pork)", MapLink: "http://maps.google.com/?q=Mokkosu+Sannomiya+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Taro (Sannomiya)", Style: "Ramen (Rich Tonkotsu with free unlimited Kimchi)", MapLink: "http://maps.google.com/?q=Ramen+Taro+Sannomiya+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Gyoza no Mise Hyotan (Sannomiya)", Style: "Gyoza (Legendary Miso Sauce Dumplings)", MapLink: "http://maps.google.com/?q=Gyoza+no+Mise+Hyotan+Sannomiya", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Gyoza no Mise Hyotan (Motomachi)", Style: "Gyoza (Legendary Miso Sauce Dumplings)", MapLink: "http://maps.google.com/?q=Gyoza+no+Mise+Hyotan+Motomachi", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Koba", Style: "Ramen (Local Sannomiya Shoyu Ramen)", MapLink: "http://maps.google.com/?q=Ramen+Koba+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Tsukado", Style: "Ramen (Thick Seafood Tonkotsu Tsukemen)", MapLink: "http://maps.google.com/?q=Ramen+Tsukado+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Kanda", Style: "Ramen (Classic Shio Ramen)", MapLink: "http://maps.google.com/?q=Ramen+Kanda+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Genpei", Style: "Ramen (Spicy Garlic Ramen)", MapLink: "http://maps.google.com/?q=Ramen+Genpei+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Suzume", Style: "Ramen (Rich Chicken Paitan)", MapLink: "http://maps.google.com/?q=Ramen+Suzume+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Ippudo (Sannomiya)", Style: "Ramen (Globally famous Hakata Tonkotsu)", MapLink: "http://maps.google.com/?q=Ippudo+Sannomiya+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Daiki", Style: "Ramen (Light Chicken Broth with Wontons)", MapLink: "http://maps.google.com/?q=Ramen+Daiki+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Shisen", Style: "Ramen (Fiery Tantanmen with sesame paste)", MapLink: "http://maps.google.com/?q=Ramen+Shisen+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Santouka (Sannomiya)", Style: "Ramen (Hokkaido Shio Ramen with pickled plum)", MapLink: "http://maps.google.com/?q=Santouka+Sannomiya+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Ichiran (Sannomiya)", Style: "Ramen (Classic Tonkotsu in individual booths)", MapLink: "http://maps.google.com/?q=Ichiran+Sannomiya+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Tsukemen Kurabito", Style: "Ramen (Rich Fish and Pork Broth Dipping Noodles)", MapLink: "http://maps.google.com/?q=Tsukemen+Kurabito+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Masaya", Style: "Ramen (Miso-based Ramen with spicy options)", MapLink: "http://maps.google.com/?q=Ramen+Masaya+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
+            { Name: "Ramen Kotan", Style: "Ramen (Traditional Soy Sauce Ramen)", MapLink: "http://maps.google.com/?q=Ramen+Kotan+Kobe", Type: "Noodles", Feelings_EN: "mindless eating, low energy, worn out, fast comfort, solo dining, low-key, rewinding", Feelings_JA: "サクッと, 一人飯, 疲れ気味, 気軽に, 深夜の贅沢, 手軽に済ませたい, ほっこり" },
 
-            document.addEventListener("DOMContentLoaded", () => {
-                const titlePage = document.getElementById("title-page");
-                const chatPage = document.getElementById("chat-page");
-                const btnJapanese = document.getElementById("btn-japanese");
-                const btnEnglish = document.getElementById("btn-english");
-                const btnBack = document.getElementById("btn-back");
-                const btnSend = document.getElementById("btn-send");
-                const chatInput = document.getElementById("chat-input");
-                const chatMessages = document.getElementById("chat-messages");
+            // --- MEAT (12店舗) ---
+            { Name: "Kobe Beef Kaiseki Ishida", Style: "Kobe Beef Kaiseki (Multi-course traditional beef dinner)", MapLink: "http://maps.google.com/?q=Kobe+Beef+Kaiseki+Ishida", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Kobe Beef Steak Ishida (Sannomiya Honten)", Style: "Kobe Beef Teppanyaki (Premium teppanyaki steak experience)", MapLink: "http://maps.google.com/?q=Kobe+Beef+Steak+Ishida+Sannomiya", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Steak Aoyama", Style: "Kobe Beef Teppanyaki (Warm family-run shop serving high-grade beef)", MapLink: "http://maps.google.com/?q=Steak+Aoyama+Kobe", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Misono Kobe Honten", Style: "Kobe Beef Teppanyaki (The birthplace of Teppanyaki steak)", MapLink: "http://maps.google.com/?q=Misono+Kobe", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Wakkoqu (Shin-Kobe Honten)", Style: "Kobe Beef Teppanyaki (Exquisite beef cooked with rock salt and pepper)", MapLink: "http://maps.google.com/?q=Wakkoqu+Shin+Kobe", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Steak Land Kobe (Sannomiya)", Style: "Kobe Beef Teppanyaki (Lively and casual teppanyaki at accessible prices)", MapLink: "http://maps.google.com/?q=Steak+Land+Kobe", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Gyushige (Sannomiya)", Style: "Yakiniku (High-quality all-you-can-eat Japanese BBQ)", MapLink: "http://maps.google.com/?q=Gyushige+Sannomiya+Kobe", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Kobe Gyukatsu Motomachi", Style: "Gyukatsu (Crispy deep-fried rare beef cutlet with dipping stones)", MapLink: "http://maps.google.com/?q=Kobe+Gyukatsu+Motomachi", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Red Rock (Sannomiya Honten)", Style: "Roast Beef Bowl (Towering roast beef and steak bowls with creamy sauce)", MapLink: "http://maps.google.com/?q=Red+Rock+Sannomiya+Kobe", Type: "Meat", Feelings_EN: "indigo, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Steak House Medium Rare (Kobe Oriental Hotel)", Style: "Kobe Beef Teppanyaki (Sleek hotel dining with harbor views)", MapLink: "http://maps.google.com/?q=Steak+House+Medium+Rare+Kobe", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Kobe Beef Tajima", Style: "Kobe Beef Steak (Intimate steakhouse focusing on premium Tajima beef cuts)", MapLink: "http://maps.google.com/?q=Kobe+Beef+Tajima+Kobe", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
+            { Name: "Steak Sakura", Style: "Kobe Beef Teppanyaki (Artistic presentation of A5 beef in a elegant interior)", MapLink: "http://maps.google.com/?q=Steak+Sakura+Kobe", Type: "Meat", Feelings_EN: "indulgent, feast mode, treat myself, high spirit, cheat day, sensory overload, upscale, celebration", Feelings_JA: "がっつり, ご褒美, テンション高い, 特別な日, 贅沢したい, お祝い, 精力をつけたい" },
 
-                // --------------------------------------------------
-                // 画面遷移イベント
-                // --------------------------------------------------
-                btnJapanese.addEventListener("click", () => {
-                    startChat("ja");
-                });
+            // --- GLOBAL (10店舗) ---
+            { Name: "Kobe Moorish Cafe", Style: "Mediterranean Cuisine (Chic cafe serving Spanish tapas and Moroccan tagines)", MapLink: "http://maps.google.com/?q=Kobe+Moorish+Cafe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "Cafe de Paris (Kitano)", Style: "French Bistro (Colorful French terrace in the historic Kitano Ijinkan district)", MapLink: "http://maps.google.com/?q=Cafe+de+Paris+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "Naan & Curry Ganesh", Style: "Indian Restaurant (Famous for giant buttery garlic naan and rich butter chicken)", MapLink: "http://maps.google.com/?q=Ganesh+Indian+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "Thali Indian Restaurant", Style: "Indian Curry (Authentic thali platters with spicy vegetable curries)", MapLink: "http://maps.google.com/?q=Thali+Indian+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "Xiang Jiang Chinese Restaurant", Style: "Chinese Cuisine (Elegant Cantonese dim sum and mapo tofu)", MapLink: "http://maps.google.com/?q=Xiang+Jiang+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "Kobe Chinatown Xiang Jiang", Style: "Chinese Street Food (Authentic pork buns and pan-fried dumplings)", MapLink: "http://maps.google.com/?q=Kobe+Chinatown+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "Ali’s Halal Kitchen", Style: "Halal Pakistani Cuisine (Delicious lamb biryani and robust chicken karahi)", MapLink: "http://maps.google.com/?q=Ali+Halal+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "L’Ami (French-style bistro)", Style: "洋食 Yoshoku (Famous for its fluffy demi-glace omurice and crab croquettes)", MapLink: "http://maps.google.com/?q=LAmi+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "Royal Moti (Indian)", Style: "Indian Curry (Vibrant halal Indian dining with tandoori platters)", MapLink: "http://maps.google.com/?q=Royal+Moti+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
+            { Name: "Persia Restaurant", Style: "Persian Cuisine (Flavorful saffron rice and skewered beef/chicken kebabs)", MapLink: "http://maps.google.com/?q=Persia+Restaurant+Kobe", Type: "Global", Feelings_EN: "adventurous, breaking the routine, bold cravings, vibrant night, lively atmosphere, escape, stimulating", Feelings_JA: "刺激が欲しい, いつもと違う味, 異国情緒, 冒険心, ワクワクしたい, 賑やかな夜" },
 
-                btnEnglish.addEventListener("click", () => {
-                    startChat("en");
-                });
+            // --- SWEET (10店舗) ---
+            { Name: "Tooth Tooth Maison 15th", Style: "Patisserie & Cafe (Elegant French pastries in an official National Important Cultural Property)", MapLink: "http://maps.google.com/?q=Tooth+Tooth+Maison+15th", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "L'Avenue", Style: "Chocolatier & Patisserie (World-class chocolates and complex cakes by a master pastry chef)", MapLink: "http://maps.google.com/?q=LAvenue+Kobe", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "Patisserie Mont Plus", Style: "French Patisserie (Authentic French cakes with delicate sponge layers and fruit tarts)", MapLink: "http://maps.google.com/?q=Mont+Plus+Kobe", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "Caffera (Daimaru Kobe)", Style: "Italian Cafe (Historic open-air terrace famous for its barista-art caffe lattes)", MapLink: "http://maps.google.com/?q=Caffera+Kobe", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "Nishimura Coffee (Nakayamate Honten)", Style: "Historic Coffeehouse (Kobe institution serving premium hand-dripped coffee in a European brick villa)", MapLink: "http://maps.google.com/?q=Nishimura+Coffee+Nakayamate", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "Blue Bottle Coffee Kobe", Style: "Modernist Cafe (Minimalist high-ceiling cafe serving freshly roasted single-origin pour overs)", MapLink: "http://maps.google.com/?q=Blue+Bottle+Coffee+Kobe", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "Frantz Harborland Kobe", Style: "Sweet Souvenirs (Famous for the 'Kobe Magic Pot Pudding'—creamy custard with bitter caramel)", MapLink: "http://maps.google.com/?q=Frantz+Harborland+Kobe", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "Boulangerie Comme Chinois", Style: "Bakery Pastries (Gourmet sweet pastries and light, flaky croissants)", MapLink: "http://maps.google.com/?q=Comme+Chinois+Kobe", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "Motomachi Cake (元町ケーキ)", Style: "Classic Cakes (Famous for 'Zakuro'—fluffy sponge cake with fresh cream and strawberries)", MapLink: "http://maps.google.com/?q=Motomachi+Cake+Kobe", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" },
+            { Name: "Ashiya Purny (Kobe Daichiku)", Style: "Gelato (Boutique spot serving smooth, artisanal gelato made with local dairy)", MapLink: "http://maps.google.com/?q=Ashiya+Purny+Kobe", Type: "Sweet", Feelings_EN: "emotional rescue, mental fatigue, sweet escape, cozy afternoon, slow pace, aesthetically pleasing, unearned reward", Feelings_JA: "しょんぼり, ストレス解消, 別腹, 自分を甘やかす, 映えスイーツ, 優雅な午後, 癒やされたい" }
+        ];
 
-                btnBack.addEventListener("click", () => {
-                    chatPage.style.display = "none";
-                    titlePage.style.display = "flex";
-                    chatMessages.innerHTML = "";
-                });
+        // 感情フォールバックマッピング用のキーワード定義
+        const categoryMapping = {
+            Noodles: {
+                en: ["mindless eating", "low energy", "worn out", "fast comfort", "solo dining", "low-key", "rewinding", "noodles", "ramen", "gyoza"],
+                ja: ["サクッと", "一人飯", "疲れ気味", "気軽に", "深夜の贅沢", "手軽に済ませたい", "ほっこり", "ラーメン", "らーめん", "餃子", "ぎょうざ", "麺"]
+            },
+            Meat: {
+                en: ["indulgent", "feast mode", "treat myself", "high spirit", "cheat day", "sensory overload", "upscale", "celebration", "meat", "beef", "steak", "yakiniku"],
+                ja: ["がっつり", "ご褒美", "テンション高い", "特別な日", "贅沢したい", "お祝い", "精力をつけたい", "肉", "ビーフ", "ステーキ", "焼肉", "牛かつ"]
+            },
+            Global: {
+                en: ["adventurous", "breaking the routine", "bold cravings", "vibrant night", "lively atmosphere", "escape", "stimulating", "global", "curry", "french", "chinese", "halal", "spicy"],
+                ja: ["刺激が欲しい", "いつもと違う味", "異国情緒", "冒険心", "ワクワクしたい", "賑やかな夜", "カレー", "洋食", "中華", "ハラール", "フランス", "スパイシー", "辛い"]
+            },
+            Sweet: {
+                en: ["emotional rescue", "mental fatigue", "sweet escape", "cozy afternoon", "slow pace", "aically pleasing", "unearned reward", "sweet", "dessert", "cake", "coffee", "cafe", "chocolate"],
+                ja: ["しょんぼり", "ストレス解消", "別腹", "自分を甘やかす", "映えスイーツ", "優雅な午後", "癒やされたい", "甘い", "スイーツ", "ケーキ", "カフェ", "珈琲", "コーヒー", "チョコレート", "おやつ"]
+            }
+        };
 
-                // --------------------------------------------------
-                // チャット開始処理
-                // --------------------------------------------------
-                function startChat(lang) {
-                    currentLang = lang;
-                    titlePage.style.display = "none";
-                    chatPage.style.display = "flex";
+        // アプリケーションの状態管理
+        let currentLang = 'ja'; 
+        let currentApiKey = '';
 
-                    if (lang === "ja") {
-                        document.getElementById("header-title").textContent =
-                            "Kobe Foodie Friend";
-                        document.getElementById("header-status").textContent =
-                            "オンライン • 気分で探す神戸グルメ";
-                        chatInput.placeholder =
-                            "今の気分や感情を入力... (例: 疲れ気味, ご褒美)";
+        // ==================================================
+        // 🔑 ユーザーから指定されたAPIキー取得ロジックの組み込み
+        // ==================================================
+        function getOrFetchApiKey() {
+            // 1. まずはブラウザの保存庫（localStorage）にキーがあるか確認
+            let apiKey = localStorage.getItem("kff_key");
+
+            // 2. もし保存庫が空っぽだったら、ユーザーに入力を求める
+            if (!apiKey) {
+                try {
+                    apiKey = prompt("GeminiのAPIキーを入力してください（ブラウザに安全に保存されます）:");
+                    
+                    // ユーザーがキャンセルせずに入力してくれたら、保存庫にしまう
+                    if (apiKey) {
+                        localStorage.setItem("kff_key", apiKey);
                     } else {
-                        document.getElementById("header-title").textContent =
-                            "Kobe Foodie Friend";
-                        document.getElementById("header-status").textContent =
-                            "Online • Match by your current vibe";
-                        chatInput.placeholder =
-                            "How do you feel? (e.g., worn out, treat myself)";
+                        alert("APIキーが入力されなかったため、AIチャット機能は動作しません。");
                     }
+                } catch (e) {
+                    // iFrame制限等で prompt/alert がブロックされた場合のセーフティネット
+                    console.warn("Prompt/Alert was blocked by sandbox iframe. Launching fall-back setup modal.");
+                    document.getElementById('setup-modal').style.display = 'flex';
+                }
+            }
 
-                    sendBotGreeting();
+            return apiKey;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const titlePage = document.getElementById('title-page');
+            const chatPage = document.getElementById('chat-page');
+            const btnJapanese = document.getElementById('btn-japanese');
+            const btnEnglish = document.getElementById('btn-english');
+            const btnBack = document.getElementById('btn-back');
+            const btnSend = document.getElementById('btn-send');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+
+            // APIキーセットアップモーダルのDOM（ブロック時フォールバック用）
+            const btnSettings = document.getElementById('btn-settings');
+            const setupModal = document.getElementById('setup-modal');
+            const btnSaveKey = document.getElementById('btn-save-key');
+            const btnSkipKey = document.getElementById('btn-skip-key');
+            const userApiKeyInput = document.getElementById('user-api-key');
+
+            // ページロード時に、既存の保存済キーを自動セット
+            currentApiKey = localStorage.getItem("kff_key") || '';
+
+            // --------------------------------------------------
+            // 画面遷移イベント
+            // --------------------------------------------------
+            btnJapanese.addEventListener('click', () => {
+                currentLang = 'ja';
+                checkApiKeyAndStart();
+            });
+
+            btnEnglish.addEventListener('click', () => {
+                currentLang = 'en';
+                checkApiKeyAndStart();
+            });
+
+            btnBack.addEventListener('click', () => {
+                chatPage.style.display = 'none';
+                titlePage.style.display = 'flex';
+                chatMessages.innerHTML = '';
+            });
+
+            // --------------------------------------------------
+            // APIキー接続チェック＆フロー開始
+            // --------------------------------------------------
+            function checkApiKeyAndStart() {
+                currentApiKey = getOrFetchApiKey();
+                startChat();
+            }
+
+            // --------------------------------------------------
+            // 手動ギア(⚙️)アイコンからの設定リセットイベント
+            // --------------------------------------------------
+            btnSettings.addEventListener('click', () => {
+                // 一度既存のkff_keyを消去し、入力を再要求する
+                localStorage.removeItem("kff_key");
+                currentApiKey = getOrFetchApiKey();
+                if (currentApiKey) {
+                    startChat();
+                }
+            });
+
+            // モーダルフォールバック時のボタンイベント
+            btnSaveKey.addEventListener('click', () => {
+                const enteredKey = userApiKeyInput.value.trim();
+                if (enteredKey) {
+                    localStorage.setItem("kff_key", enteredKey);
+                    currentApiKey = enteredKey;
+                }
+                setupModal.style.display = 'none';
+                startChat();
+            });
+
+            btnSkipKey.addEventListener('click', () => {
+                localStorage.removeItem("kff_key");
+                currentApiKey = '';
+                setupModal.style.display = 'none';
+                startChat();
+            });
+
+            // --------------------------------------------------
+            // チャット開始処理
+            // --------------------------------------------------
+            function startChat() {
+                titlePage.style.display = 'none';
+                chatPage.style.display = 'flex';
+
+                if (currentLang === 'ja') {
+                    document.getElementById('header-title').textContent = 'Kobe Foodie Friend';
+                    document.getElementById('header-status').textContent = 'オンライン • 気分で探す神戸グルメ';
+                    chatInput.placeholder = '今の気分や感情を入力... (例: 疲れ気味, ご褒美)';
+                } else {
+                    document.getElementById('header-title').textContent = 'Kobe Foodie Friend';
+                    document.getElementById('header-status').textContent = 'Online • Match by your current vibe';
+                    chatInput.placeholder = 'How do you feel? (e.g., worn out, treat myself)';
                 }
 
-                // --------------------------------------------------
-                // メッセージ送信処理
-                // --------------------------------------------------
-                btnSend.addEventListener("click", () => {
+                // 履歴エリア初期化して挨拶を表示
+                chatMessages.innerHTML = '';
+                sendBotGreeting();
+            }
+
+            // --------------------------------------------------
+            // メッセージ送信処理
+            // --------------------------------------------------
+            btnSend.addEventListener('click', () => {
+                handleUserSendMessage();
+            });
+
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
                     handleUserSendMessage();
-                });
+                }
+            });
 
-                chatInput.addEventListener("keypress", (e) => {
-                    if (e.key === "Enter") {
-                        handleUserSendMessage();
-                    }
-                });
+            function handleUserSendMessage() {
+                const text = chatInput.value.trim();
+                if (!text) return;
 
-                function handleUserSendMessage() {
-                    const text = chatInput.value.trim();
-                    if (!text) return;
+                addMessage(text, 'user');
+                chatInput.value = '';
 
-                    addMessage(text, "user");
-                    chatInput.value = "";
+                setTimeout(() => {
+                    respondToUser(text);
+                }, 400);
+            }
 
-                    setTimeout(() => {
-                        respondToUser(text);
-                    }, 400);
+            // --------------------------------------------------
+            // チャットへのバブル追加関数
+            // --------------------------------------------------
+            function addMessage(text, sender, extraElement = null) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'avatar';
+                avatarDiv.textContent = sender === 'bot' ? '🍽️' : '👤';
+
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'bubble';
+                bubbleDiv.innerHTML = text.replace(/\n/g, '<br>');
+
+                if (extraElement) {
+                    bubbleDiv.appendChild(extraElement);
                 }
 
-                // --------------------------------------------------
-                // チャットへのバブル追加関数
-                // --------------------------------------------------
-                function addMessage(text, sender, extraElement = null) {
-                    const messageDiv = document.createElement("div");
-                    messageDiv.className = `message ${sender}`;
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(bubbleDiv);
+                chatMessages.appendChild(messageDiv);
 
-                    const avatarDiv = document.createElement("div");
-                    avatarDiv.className = "avatar";
-                    avatarDiv.textContent = sender === "bot" ? "🍽️" : "👤";
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return messageDiv;
+            }
 
-                    const bubbleDiv = document.createElement("div");
-                    bubbleDiv.className = "bubble";
-                    bubbleDiv.innerHTML = text.replace(/\n/g, "<br>");
+            // --------------------------------------------------
+            // ボット初期挨拶
+            // --------------------------------------------------
+            function sendBotGreeting() {
+                let greetingText = "";
+                let chips = [];
 
-                    if (extraElement) {
-                        bubbleDiv.appendChild(extraElement);
-                    }
-
-                    messageDiv.appendChild(avatarDiv);
-                    messageDiv.appendChild(bubbleDiv);
-                    chatMessages.appendChild(messageDiv);
-
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                if (currentLang === 'ja') {
+                    greetingText = "こんにちは！Kobe Foodie Friend へようこそ。\n今のあなたの気分や、お腹のすき具合はどんな感じですか？\n例えば、以下の感情キーワードから選ぶか、自由に入力してください！";
+                    chips = ["サクッと", "一人飯", "ご褒美", "刺激が欲しい", "しょんぼり", "疲れ気味"];
+                } else {
+                    greetingText = "Hello! Welcome to Kobe Foodie Friend.\nHow are you feeling right now? What is your vibe today?\nFeel free to type your emotion, or select one from below:";
+                    chips = ["worn out", "treat myself", "solo dining", "adventurous", "low energy", "sweet escape"];
                 }
 
-                // --------------------------------------------------
-                // ボット初期挨拶
-                // --------------------------------------------------
-                function sendBotGreeting() {
-                    let greetingText = "";
-                    let chips = [];
+                if (currentApiKey) {
+                    greetingText += (currentLang === 'ja') ? "\n\n✨ **Gemini RAG AIエンジン接続中** ✨\nリアルタイムで最適な分析提案を行います。" : "\n\n✨ **Gemini RAG AI Engine Connected** ✨\nReal-time semantic analysis is active.";
+                } else {
+                    greetingText += (currentLang === 'ja') ? "\n\n⚙️ **ローカル検索モードで動作中**\n右上の設定(⚙️)からAPIキーを設定すると、本物のAIチャットにアップグレードできます！" : "\n\n⚙️ **Running in Local Mode**\nYou can upgrade to full AI matching by tapping the gear icon (⚙️) on the top right.";
+                }
 
-                    if (currentLang === "ja") {
-                        greetingText =
-                            "こんにちは！Kobe Foodie Friend へようこそ。\n今のあなたの気分や、お腹のすき具合はどんな感じですか？\n例えば、以下の感情キーワードから選ぶか、自由に入力してください！";
-                        chips = [
-                            "サクッと",
-                            "一人飯",
-                            "ご褒美",
-                            "刺激が欲しい",
-                            "しょんぼり",
-                            "疲れ気味",
-                        ];
-                    } else {
-                        greetingText =
-                            "Hello! Welcome to Kobe Foodie Friend.\nHow are you feeling right now? What is your vibe today?\nFeel free to type your emotion, or select one from below:";
-                        chips = [
-                            "worn out",
-                            "treat myself",
-                            "solo dining",
-                            "adventurous",
-                            "low energy",
-                            "sweet escape",
-                        ];
+                const chipsContainer = document.createElement('div');
+                chipsContainer.className = 'chips-container';
+                chips.forEach(keyword => {
+                    const chip = document.createElement('span');
+                    chip.className = 'chip';
+                    chip.textContent = keyword;
+                    chip.addEventListener('click', () => {
+                        addMessage(keyword, 'user');
+                        setTimeout(() => respondToUser(keyword), 400);
+                    });
+                    chipsContainer.appendChild(chip);
+                });
+
+                addMessage(greetingText, 'bot', chipsContainer);
+            }
+
+            // --------------------------------------------------
+            // メイン処理：AI RAG / ローカル検索のハンドラ
+            // --------------------------------------------------
+            async function respondToUser(userInput) {
+                if (currentApiKey) {
+                    // APIキーがあればRAG検索を実行
+                    await handleRAGQuery(userInput);
+                } else {
+                    // キーが無ければ、安心のローカル検索
+                    handleLocalFallback(userInput);
+                }
+            }
+
+            // --------------------------------------------------
+            // 🚀 [RAG化] Gemini API への連携処理
+            // --------------------------------------------------
+            async function handleRAGQuery(userInput) {
+                // ローディング中のメッセージ表示
+                const loadingText = currentLang === 'ja' ? "AIが神戸の店舗を分析中" : "AI is analyzing Kobe restaurants";
+                const loadingDiv = addMessage(`<div class="ai-loading-bubble">${loadingText}<span class="loader-dots"><span>.</span><span>.</span><span>.</span></span></div>`, 'bot');
+
+                // 50店舗データをGemini向けの検索知識コンテキストにフォーマット
+                const shopsContext = kobeShops.map((shop, i) => {
+                    return `【ID: ${i+1}】\n店名: ${shop.Name}\nスタイル: ${shop.Style}\nカテゴリ: ${shop.Type}\n関連感情(日): ${shop.Feelings_JA}\n関連感情(英): ${shop.Feelings_EN}`;
+                }).join("\n---\n");
+
+                // システムプロンプトの設計 (ハルシネーションの厳格な排除 ＆ 指定JSON出力)
+                const systemPrompt = `
+                You are "Kobe Foodie Friend", a warm, comforting, and empathetic AI food guide specializing in Kobe gastronomy.
+                Your task is to match the user's emotion/vibe/request with the best 1 to 3 restaurants from the provided database.
+                
+                Kobe Restaurants Database (You MUST select ONLY from these 50 restaurants):
+                ${shopsContext}
+
+                Rule 1: NEVER recommend any shop that is not in the list. Do NOT hallucinate names, descriptions, or URLs.
+                Rule 2: Respond in the user's language (Japanese if they write in Japanese, English if they write in English).
+                Rule 3: Keep your commentary highly friendly, welcoming, brief, and directly matched to their vibe/craving.
+                Rule 4: Your reply MUST be in the following raw JSON format, containing an empathetic friendly commentary and the exact list of matched shop names:
+                {
+                  "commentary": "Explain why you picked these shops based on their feelings in a warm tone (1-3 sentences).",
+                  "matchedShopNames": ["Exact Name 1", "Exact Name 2"]
+                }
+                `;
+
+                // リクエストボディ構築 (カンペ指定構造)
+                const requestBody = {
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                    contents: [{
+                        role: "user",
+                        parts: [{ text: userInput }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 800,
+                        responseMimeType: "application/json" // 確実なJSONパースのための指定
                     }
+                };
 
-                    const chipsContainer = document.createElement("div");
-                    chipsContainer.className = "chips-container";
-                    chips.forEach((keyword) => {
-                        const chip = document.createElement("span");
-                        chip.className = "chip";
-                        chip.textContent = keyword;
-                        chip.addEventListener("click", () => {
-                            addMessage(keyword, "user");
-                            setTimeout(() => respondToUser(keyword), 400);
-                        });
-                        chipsContainer.appendChild(chip);
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${currentApiKey}`;
+
+                try {
+                    const response = await fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(requestBody)
                     });
 
-                    addMessage(greetingText, "bot", chipsContainer);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    // ローダー削除
+                    loadingDiv.remove();
+
+                    // カンペ指示通りの取り出し場所
+                    const responseText = data.candidates[0].content.parts[0].text;
+                    console.log("AI Response Raw Text:", responseText); // カンペ指示のログ出力
+
+                    const parsedResponse = JSON.parse(responseText);
+
+                    // 1. AIのおすすめ解説メッセージを追加
+                    addMessage(parsedResponse.commentary, 'bot');
+
+                    // 2. マッチした正確な名前の店舗カードを出力
+                    const matchedNames = parsedResponse.matchedShopNames || [];
+                    let cardsDisplayed = 0;
+
+                    matchedNames.forEach(shopName => {
+                        // スペルや大文字小文字の揺らぎを吸収してマッチング
+                        const foundShop = kobeShops.find(s => s.Name.toLowerCase() === shopName.trim().toLowerCase());
+                        if (foundShop) {
+                            cardsDisplayed++;
+                            const cardDiv = document.createElement('div');
+                            cardDiv.className = 'shop-card';
+                            const badgeClass = `badge-${foundShop.Type.toLowerCase()}`;
+
+                            cardDiv.innerHTML = `
+                                <span class="shop-type-badge ${badgeClass}">${foundShop.Type}</span>
+                                <h3 class="shop-name">${foundShop.Name}</h3>
+                                <p class="shop-style">${foundShop.Style}</p>
+                                <a href="${foundShop.MapLink}" target="_blank" class="shop-link">
+                                    📍 Google Maps で見る →
+                                </a>
+                            `;
+                            addMessage("", 'bot', cardDiv);
+                        }
+                    });
+
+                    // 万が一店名が完全に一致しなかった場合のローカルフォールバック
+                    if (cardsDisplayed === 0) {
+                        handleLocalFallback(userInput, true);
+                    }
+
+                } catch (error) {
+                    console.error("Gemini API Error:", error);
+                    loadingDiv.remove();
+
+                    // エラー時のフォールバック通知
+                    const errMsg = currentLang === 'ja' 
+                        ? "⚠️ AI連携に一時的に問題が発生しました。ローカル検索機能に切り替えてお店を提案します。"
+                        : "⚠️ Temporary issue with AI connection. Falling back to local search.";
+                    addMessage(errMsg, 'bot');
+                    
+                    // ローカル検索を実行
+                    handleLocalFallback(userInput);
+                }
+            }
+
+            // --------------------------------------------------
+            // 2. ローカル検索 & 近い店の推薦 (フォールバック)
+            // --------------------------------------------------
+            function handleLocalFallback(userInput, isSilent = false) {
+                const query = userInput.toLowerCase().trim();
+                let matchedCategory = null;
+                let isFallback = false;
+
+                // 各カテゴリの定義タグをスキャン
+                for (const [category, languages] of Object.entries(categoryMapping)) {
+                    const enMatches = languages.en.filter(kw => query.includes(kw));
+                    const jaMatches = languages.ja.filter(kw => query.includes(kw));
+
+                    if (enMatches.length > 0 || jaMatches.length > 0) {
+                        matchedCategory = category;
+                        break;
+                    }
                 }
 
-                // --------------------------------------------------
-                // ユーザー入力に対する応答・店舗マッチング処理
-                // --------------------------------------------------
-                function respondToUser(userInput) {
-                    const query = userInput.toLowerCase().trim();
-                    let matchedCategory = null;
-                    let matchedKeywords = [];
-                    let isFallback = false;
+                // データベースからのフィルタ
+                let results = [];
+                if (matchedCategory) {
+                    results = kobeShops.filter(shop => shop.Type === matchedCategory);
+                } else {
+                    results = kobeShops.filter(shop => {
+                        return shop.Name.toLowerCase().includes(query) || 
+                               shop.Style.toLowerCase().includes(query) || 
+                               shop.Feelings_JA.toLowerCase().includes(query) || 
+                               shop.Feelings_EN.toLowerCase().includes(query);
+                    });
+                }
 
-                    // 1. カテゴリ検出 (言葉の類似や大枠カテゴリマッピング)
-                    for (const [category, languages] of Object.entries(
-                        categoryMapping,
-                    )) {
-                        const enMatches = languages.en.filter((kw) =>
-                            query.includes(kw),
-                        );
-                        const jaMatches = languages.ja.filter((kw) =>
-                            query.includes(kw),
-                        );
+                // 一致する店舗が皆無な場合、「近い店（同じカテゴリ群）」に強制フォールバック
+                if (results.length === 0) {
+                    isFallback = true;
+                    const fallbackCategories = ["Meat", "Sweet", "Noodles", "Global"];
+                    const selectedCategory = fallbackCategories[userInput.length % fallbackCategories.length];
+                    matchedCategory = selectedCategory;
+                    results = kobeShops.filter(shop => shop.Type === selectedCategory);
+                }
 
-                        if (enMatches.length > 0 || jaMatches.length > 0) {
-                            matchedCategory = category;
-                            matchedKeywords = [...enMatches, ...jaMatches];
-                            break;
-                        }
-                    }
+                // シャッフルして最大3つ取り出す
+                const shuffled = results.sort(() => 0.5 - Math.random());
+                const topResults = shuffled.slice(0, 3);
 
-                    // 2. 店舗データベース（kobeShops）からのマッチング
-                    let results = [];
-                    if (matchedCategory) {
-                        // 特定した感情カテゴリから全件抽出
-                        results = kobeShops.filter(
-                            (shop) => shop.Type === matchedCategory,
-                        );
-                    } else {
-                        // 部分一致を徹底的にスキャン (店名、スタイル、英語・日本語感情タグ)
-                        results = kobeShops.filter((shop) => {
-                            return (
-                                shop.Name.toLowerCase().includes(query) ||
-                                shop.Style.toLowerCase().includes(query) ||
-                                shop.Feelings_JA.toLowerCase().includes(
-                                    query,
-                                ) ||
-                                shop.Feelings_EN.toLowerCase().includes(query)
-                            );
-                        });
-                    }
-
-                    // 3. 要件通りの店舗が見つからない場合の「近い店」自動提案 (フォールバック)
-                    if (results.length === 0) {
-                        isFallback = true;
-                        // キーワード解析でもマッチしない完全なフォールバック
-                        // 入力文字数などの軽い条件からランダムまたは代表的なカテゴリ(Noodles/Sweet)を割り振るか、
-                        // もしくは神戸で一番人気のカテゴリ「Meat」(神戸牛) と 「Sweet」(洋菓子) からおすすめをピックアップ
-                        const fallbackCategories = [
-                            "Meat",
-                            "Sweet",
-                            "Noodles",
-                            "Global",
-                        ];
-                        // ユーザーの入力テキストの長さ等で少し変化をつけてカテゴリを選択
-                        const selectedCategory =
-                            fallbackCategories[
-                                userInput.length % fallbackCategories.length
-                            ];
-
-                        matchedCategory = selectedCategory;
-                        results = kobeShops.filter(
-                            (shop) => shop.Type === selectedCategory,
-                        );
-                    }
-
-                    // シャッフルまたは選別のうえ最大3件に絞る (ユーザーへの提案として親切な件数)
-                    // 毎回同じ店ばかりにならないように、検出された結果からランダムに3つ抽出
-                    const shuffled = results.sort(() => 0.5 - Math.random());
-                    const topResults = shuffled.slice(0, 3);
-
-                    // 4. ボットの返答テキスト作成
+                if (!isSilent) {
                     let responseText = "";
-                    if (currentLang === "ja") {
+                    if (currentLang === 'ja') {
                         if (isFallback) {
-                            responseText = `「${userInput}」に完全一致するピンポイントな条件は見つかりませんでしたが、データベース内から近い雰囲気を持つおすすめのお店をこちらのカテゴリ（**${matchedCategory}**）からご紹介します！`;
+                            responseText = `「${userInput}」に完全に一致する条件は見つかりませんでしたが、データベース内から近い雰囲気のお店（**${matchedCategory}**）を提案します！`;
                         } else {
-                            responseText = `あなたの「${matchedCategory || userInput}」な気分にぴったりの神戸のお店を、データベースから厳選してご紹介します！`;
+                            responseText = `あなたの「${matchedCategory || userInput}」な気分にぴったりの神戸のお店を厳選しました！`;
                         }
                     } else {
                         if (isFallback) {
-                            responseText = `I couldn't find an exact match for "${userInput}", but here are some recommended alternatives with a similar vibe under the "**${matchedCategory}**" category!`;
+                            responseText = `I couldn't find an exact match for "${userInput}", but here are some recommended alternatives under the "**${matchedCategory}**" category!`;
                         } else {
                             responseText = `I found some perfect restaurants in Kobe matching your "${matchedCategory || userInput}" vibe!`;
                         }
                     }
+                    addMessage(responseText, 'bot');
+                }
 
-                    // レスポンスとカードの追加
-                    addMessage(responseText, "bot");
+                // カードを追加
+                topResults.forEach(shop => {
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = 'shop-card';
+                    const badgeClass = `badge-${shop.Type.toLowerCase()}`;
 
-                    topResults.forEach((shop) => {
-                        const cardDiv = document.createElement("div");
-                        cardDiv.className = "shop-card";
-
-                        // カテゴリに応じたバッジ
-                        const badgeClass = `badge-${shop.Type.toLowerCase()}`;
-                        const badgeText = shop.Type;
-
-                        cardDiv.innerHTML = `
-                        <span class="shop-type-badge ${badgeClass}">${badgeText}</span>
+                    cardDiv.innerHTML = `
+                        <span class="shop-type-badge ${badgeClass}">${shop.Type}</span>
                         <h3 class="shop-name">${shop.Name}</h3>
                         <p class="shop-style">${shop.Style}</p>
                         <a href="${shop.MapLink}" target="_blank" class="shop-link">
                             📍 Google Maps で見る →
                         </a>
                     `;
+                    addMessage("", 'bot', cardDiv);
+                });
 
-                        addMessage("", "bot", cardDiv);
-                    });
+                // 次の気分入力フォローアップ
+                setTimeout(() => {
+                    let followUp = "";
+                    if (currentLang === 'ja') {
+                        followUp = "他にも「がっつり」「甘いもの」「異国情緒」など、別の気分があればいつでも話しかけてくださいね！";
+                    } else {
+                        followUp = "Let me know if you have any other vibe like 'treat myself', 'low energy', or 'adventurous'!";
+                    }
+                    addMessage(followUp, 'bot');
+                }, 800);
+            }
 
-                    // 次のアクションを促す小さなフォロー文
-                    setTimeout(() => {
-                        let followUp = "";
-                        if (currentLang === "ja") {
-                            followUp =
-                                "他にも「がっつり」「甘いもの」「異国情緒」など、別の気分があればいつでも話しかけてくださいね！";
-                        } else {
-                            followUp =
-                                "Let me know if you have any other vibe like 'treat myself', 'low energy', or 'adventurous'!";
-                        }
-                        addMessage(followUp, "bot");
-                    }, 800);
-                }
-            });
-        </script>
-    </body>
+        });
+    </script>
+</body>
 </html>
