@@ -2,35 +2,52 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kobe Foodie Friend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tabemon</title>
     <style>
         /* ==================================================
-           元ファイルのデザイン・CSSを完全に維持（省略なし）
+           基本デザイン・CSS
            ================================================== */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f5f3e9; color: #333; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .phone-container { width: 100%; max-width: 412px; height: 100vh; max-height: 850px; background-color: #ffffff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; position: relative; border: 6px solid #2c3e50; }
+        .phone-container { width: 100%; max-width: 412px; height: 100vh; max-height: 850px; background-color: #ffffff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; position: relative; border: 6px solid #2c3e50; box-sizing: border-box; }
         @media (max-width: 500px) { .phone-container { height: 100vh; max-height: 100vh; border-radius: 0; border: none; } }
-        #title-page { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 40px 24px; box-sizing: border-box; background: linear-gradient(135deg, #fdfbf7 0%, #f5f3e9 100%); overflow-y: auto; }
-        .header-group { margin-top: 20px; }
-        .main-title { font-size: 2.2rem; color: #2c3e50; margin: 0 0 4px 0; font-weight: 800; letter-spacing: -0.5px; }
-        .subtitle { font-size: 0.95rem; color: #7f8c8d; margin: 0; font-weight: 500; }
-        #image-gallery { display: flex; justify-content: center; gap: 12px; margin: 30px 0; width: 100%; }
-        .gallery-image { width: calc(33% - 8px); aspect-ratio: 1 / 1; border-radius: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); object-fit: cover; border: 2px solid #fff; transition: transform 0.2s; }
-        .gallery-image:hover { transform: scale(1.05); }
-        .welcome-text { font-size: 0.9rem; color: #555; line-height: 1.6; margin: 0 10px 20px 10px; background: rgba(255, 255, 255, 0.7); padding: 12px; border-radius: 12px; border-left: 4px solid #e74c3c; }
-        .selection-buttons { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-        .selection-buttons button { width: 100%; padding: 15px; font-size: 1rem; font-weight: 600; border: none; border-radius: 14px; cursor: pointer; transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        
+        /* タイトルページ：スクロールさせず画面内に収めるための設定 */
+        #title-page { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 20px 20px; box-sizing: border-box; background: linear-gradient(135deg, #fdfbf7 0%, #f5f3e9 100%); overflow: hidden; height: 100%; }
+        
+        .header-group { margin-top: 5px; flex-shrink: 0; }
+        .main-title { font-size: 2.3rem; color: #2c3e50; margin: 0 0 2px 0; font-weight: 900; letter-spacing: -0.5px; line-height: 1.1; }
+        .subtitle { font-size: 1.0rem; color: #e74c3c; margin: 0; font-weight: 700; letter-spacing: 1px; }
+        
+        /* 画像ギャラリー：高さを最大180pxに制限し、縦長画面でも圧迫しないよう調整 */
+        #image-gallery { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 15px 0; width: 100%; max-height: 180px; flex-shrink: 1; min-height: 100px; }
+        .gallery-image { width: 100%; height: 100%; border-radius: 10px; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); object-fit: cover; border: 1.5px solid #fff; transition: transform 0.2s; min-height: 0; }
+        .gallery-image:hover { transform: scale(1.03); }
+        .img-1 { grid-column: span 3; grid-row: span 2; }
+        .img-2 { grid-column: span 3; }
+        .img-3 { grid-column: span 3; }
+        .img-4 { grid-column: span 2; }
+        .img-5 { grid-column: span 4; }
+
+        /* 説明文：コンパクトにして余白を縮小 */
+        .welcome-text { font-size: 0.82rem; color: #555; line-height: 1.5; margin: 0 0 15px 0; background: rgba(255, 255, 255, 0.85); padding: 10px 12px; border-radius: 10px; border-left: 4px solid #e74c3c; box-shadow: 0 2px 6px rgba(0,0,0,0.02); flex-shrink: 0; text-align: left; box-sizing: border-box; width: 100%; }
+        .welcome-text small { display: block; margin-top: 4px; color: #7f8c8d; font-size: 0.75rem; line-height: 1.3; }
+        
+        /* ボタンエリア：最下部に固定され、押しやすいサイズを維持 */
+        .selection-buttons { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 5px; flex-shrink: 0; }
+        .selection-buttons button { width: 100%; padding: 14px; font-size: 0.95rem; font-weight: 600; border: none; border-radius: 12px; cursor: pointer; transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s; box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05); display: flex; align-items: center; justify-content: center; gap: 6px; box-sizing: border-box; }
         #btn-japanese { background-color: #e74c3c; color: white; }
-        #btn-japanese:hover { background-color: #c0392b; box-shadow: 0 6px 12px rgba(231, 76, 60, 0.2); }
+        #btn-japanese:hover { background-color: #c0392b; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2); }
         #btn-english { background-color: #2980b9; color: white; }
-        #btn-english:hover { background-color: #216f9e; box-shadow: 0 6px 12px rgba(41, 128, 185, 0.2); }
+        #btn-english:hover { background-color: #216f9e; box-shadow: 0 4px 10px rgba(41, 128, 185, 0.2); }
         .selection-buttons button:active { transform: translateY(1px); }
+        
+        /* チャットページ以降のスタイル */
         #chat-page { display: none; flex-direction: column; width: 100%; height: 100%; background-color: #f8f9fa; }
-        .chat-header { background-color: #2c3e50; color: white; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .chat-header { background-color: #2c3e50; color: white; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex-shrink: 0; }
         .chat-header-title { display: flex; align-items: center; gap: 10px; }
         .chat-avatar-mini { width: 32px; height: 32px; border-radius: 50%; background-color: #e74c3c; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 0.8rem; color: white; }
-        .chat-header-info h2 { margin: 0; font-size: 0.95rem; font-weight: 700; }
+        .chat-header-info h2 { margin: 0; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.5px; }
         .chat-header-info p { margin: 0; font-size: 0.75rem; color: #bdc3c7; }
         .back-button, .settings-button { background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: background-color 0.2s; display: flex; align-items: center; justify-content: center; }
         .back-button:hover, .settings-button:hover { background-color: rgba(255,255,255,0.1); }
@@ -47,7 +64,9 @@
         .chips-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .chip { background-color: #ebeef1; color: #4f5f6f; border: 1px solid #dcdfe3; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; font-weight: 500; }
         .chip:hover { background-color: #2980b9; color: white; border-color: #2980b9; }
-        .shop-card { background-color: white; border-radius: 12px; border: 1px solid #e1e8ed; padding: 12px; margin-top: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        
+        /* レストラン提示カードの装飾 */
+        .shop-card { background-color: white; border-radius: 12px; border: 1px solid #e1e8ed; padding: 12px; margin-top: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 100%; box-sizing: border-box; }
         .shop-type-badge { display: inline-block; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; text-transform: uppercase; }
         .badge-noodles { background-color: #ffeaa7; color: #d63031; }
         .badge-meat { background-color: #ffcbca; color: #c0392b; }
@@ -55,9 +74,14 @@
         .badge-sweet { background-color: #fab1a0; color: #e17055; }
         .shop-name { font-size: 0.95rem; font-weight: bold; margin: 0 0 4px 0; color: #2c3e50; }
         .shop-style { font-size: 0.75rem; color: #7f8c8d; margin: 0 0 10px 0; }
-        .shop-link { display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #2980b9; text-decoration: none; font-weight: 600; }
+        .shop-link { display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #2980b9; text-decoration: none; font-weight: 600; margin-top: 6px; }
         .shop-link:hover { text-decoration: underline; }
-        .chat-input-area { padding: 12px 16px; background-color: white; border-top: 1px solid #eaeaea; display: flex; align-items: center; gap: 8px; }
+        
+        /* 写真とインラインマップのスタイル */
+        .shop-image { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background-color: #f0f0f0; border: 1px solid #e1e8ed; }
+        .shop-map { width: 100%; height: 160px; border: none; border-radius: 8px; margin-top: 10px; margin-bottom: 4px; background-color: #f8f9fa; }
+
+        .chat-input-area { padding: 12px 16px; background-color: white; border-top: 1px solid #eaeaea; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .chat-input { flex: 1; border: 1px solid #dcdfe3; border-radius: 20px; padding: 10px 16px; font-size: 0.85rem; outline: none; transition: border-color 0.2s; }
         .chat-input:focus { border-color: #2980b9; }
         .send-button { background-color: #2980b9; color: white; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background-color 0.2s; flex-shrink: 0; }
@@ -67,9 +91,6 @@
         .setup-card { background-color: #ffffff; color: #333333; border-radius: 20px; padding: 24px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-align: left; }
         .setup-title { font-size: 1.2rem; font-weight: bold; color: #2c3e50; margin-top: 0; margin-bottom: 10px; }
         .setup-desc { font-size: 0.8rem; color: #7f8c8d; line-height: 1.5; margin-bottom: 20px; }
-        .key-input-wrapper { position: relative; width: 100%; margin-bottom: 20px; }
-        .key-input { width: 100%; padding: 12px; border: 2px solid #bdc3c7; border-radius: 10px; font-size: 0.85rem; box-sizing: border-box; outline: none; transition: border-color 0.2s; }
-        .key-input:focus { border-color: #2980b9; }
         .setup-btn { width: 100%; padding: 14px; background-color: #2980b9; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.9rem; transition: background-color 0.2s; text-align: center; }
         .setup-btn:hover { background-color: #216f9e; }
         .ai-loading-bubble { display: flex; align-items: center; gap: 6px; font-style: italic; color: #7f8c8d; }
@@ -84,17 +105,22 @@
         <div id="title-page">
             <div class="header-group">
                 <h1 class="main-title">たべもん</h1>
-                <p class="subtitle">Kobe Foodie Friend</p>
+                <p class="subtitle">Tabemon</p>
             </div>
+            
             <div id="image-gallery">
-                <img src="https://tblg.k-img.com/restaurant/images/Rvw/204407/640x640_rect_a29d198acbb6b0373dbc006395e1f1c4.jpg" alt="神戸グルメ 1" class="gallery-image">
-                <img src="https://cf-tp.furunavi.jp/travel/plan/4958/2/original/ri384kfg.jpg" alt="神戸グルメ 2" class="gallery-image">
-                <img src="https://tblg.k-img.com/restaurant/images/Rvw/204407/640x640_rect_a29d198acbb6b0373dbc006395e1f1c4.jpg" alt="神戸グルメ 3" class="gallery-image">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/8e/3a/9e/caption.jpg?w=900&h=500&s=1" alt="神戸グルメ 1" class="gallery-image img-1">
+                <img src="https://grill-ippei.co.jp/wp-content/uploads/2022/08/ogp.jpg" alt="神戸グルメ 2" class="gallery-image img-2">
+                <img src="https://tb-static.uber.com/prod/image-proc/processed_images/8df13ab9660e6bbf370897596e777483/885ba8620d45ab36746a0e8c7b85ee66.jpeg" alt="神戸グルメ 3" class="gallery-image img-3">
+                <img src="https://eatbook.sg/wp-content/uploads/2019/11/Enishi-spread-of-food.jpg" alt="神戸グルメ 4" class="gallery-image img-4">
+                <img src="https://static.gltjp.com/glt/data/directory/17000/16835/20250414_105425_791c66a7_w1920.webp" alt="神戸グルメ 5" class="gallery-image img-5">
             </div>
+            
             <div class="welcome-text">
                 神戸の厳選店舗から、今のあなたの「気分」や「感情」にピッタリな美味しい出会いを提案します。言葉にならない「なんとなく」を教えてください。<br>
-                <small style="display:block; margin-top:5px; color:#7f8c8d;">We help you find the perfect restaurant in Kobe based on your current vibe, feeling or mood.</small>
+                <small>We help you find the perfect restaurant in Kobe based on your current vibe, feeling or mood.</small>
             </div>
+            
             <div class="selection-buttons">
                 <button id="btn-japanese"><span>🇯🇵</span> 日本語で始める</button>
                 <button id="btn-english"><span>🇬🇧 / 🇯🇵</span> English / 日本語で始める</button>
@@ -105,9 +131,9 @@
             <div class="chat-header">
                 <button class="back-button" id="btn-back" title="戻る">←</button>
                 <div class="chat-header-title">
-                    <div class="chat-avatar-mini" id="header-avatar">KF</div>
+                    <div class="chat-avatar-mini" id="header-avatar">TM</div>
                     <div class="chat-header-info">
-                        <h2 id="header-title">Kobe Foodie Friend</h2>
+                        <h2 id="header-title">Tabemon</h2>
                         <p id="header-status">Online • Agent</p>
                     </div>
                 </div>
@@ -125,32 +151,28 @@
         <div class="setup-modal" id="setup-modal">
             <div class="setup-card">
                 <h3 class="setup-title">🔒 APIキー接続セットアップ</h3>
-                <p class="setup-desc">GASバックエンドで管理されているため、ここではキーの入力は不要です。</p>
+                <p class="setup-desc">GASバックエンド（スクリプトプロパティ）で管理されているため、ここではキーの入力は不要です。</p>
                 <button class="setup-btn" id="btn-save-key">閉じる</button>
             </div>
         </div>
     </div>
 
     <script>
-        // ==================================================
-        // ★ 店舗データベース (GASから起動時にロード)
-        // ==================================================
         let kobeShops = [];
         
         const categoryMapping = {
             Noodles: { en: ["mindless eating", "low energy", "worn out", "fast comfort", "solo dining", "low-key", "rewinding", "noodles", "ramen", "gyoza"], ja: ["サクッと", "一人飯", "疲れ気味", "気軽に", "深夜の贅沢", "手軽に済ませたい", "ほっこり", "ラーメン", "らーめん", "餃子", "ぎょうざ", "麺"] },
             Meat: { en: ["indulgent", "feast mode", "treat myself", "high spirit", "cheat day", "sensory overload", "upscale", "celebration", "meat", "beef", "steak", "yakiniku"], ja: ["がっつり", "ご褒美", "テンション高い", "特別な日", "贅沢したい", "お祝い", "精力をつけたい", "肉", "ビーフ", "ステーキ", "焼肉", "牛かつ"] },
-            Global: { en: ["adventurous", "breaking the routine", "bold cravings", "vibrant night", "lively atmosphere", "escape", "stimulating", "global", "curry", "french", "chinese", "halal", "spicy"], ja: ["刺激が欲しい", "いつもと違う味", "異国情緒", "冒険心", "ワクワクしたい", "賑やかな夜", "カレー", "洋食", "中華", "ハラール", "フランス", "スパイシー", "辛い"] },
+            Global: { en: ["adventurous", "breaking the routine", "bold cravings", "vibrant night", "lively atmosphere", "escape", "stimulating", "global", "curry", "french", "chinese", "halal", "spicy"], ja: ["刺激が欲しい", "いつもと違う味", "異国情緒", "冒険心", "ワクワクしたい", "賑やかな夜", "カレー", "洋食", "中華", "ハラール", "フランス", "スパーシー", "辛い"] },
             Sweet: { en: ["emotional rescue", "mental fatigue", "sweet escape", "cozy afternoon", "slow pace", "aically pleasing", "unearned reward", "sweet", "dessert", "cake", "coffee", "cafe", "chocolate"], ja: ["しょんぼり", "ストレス解消", "別腹", "自分を甘やかす", "映えスイーツ", "優雅な午後", "癒やされたい", "甘い", "スイーツ", "ケーキ", "カフェ", "珈琲", "コーヒー", "チョコレート", "おやつ"] }
         };
 
         let currentLang = 'ja'; 
-        let currentApiKey = 'GAS_BOUND_MODE'; // GAS管理のため固定フラグ
 
         document.addEventListener('DOMContentLoaded', () => {
-            // ★ スプレッドシートからデータを非同期でロード
+            // スプレッドシートからデータを非同期でロード
             google.script.run.withSuccessHandler(function(data) {
-                kobeShops = data;
+                kobeShops = data || [];
             }).getShopsData();
 
             const titlePage = document.getElementById('title-page');
@@ -162,7 +184,7 @@
             const chatInput = document.getElementById('chat-input');
             const chatMessages = document.getElementById('chat-messages');
 
-            // 既存イベント群
+            // 画面切り替えと初期化
             btnJapanese.addEventListener('click', () => { currentLang = 'ja'; startChat(); });
             btnEnglish.addEventListener('click', () => { currentLang = 'en'; startChat(); });
             btnBack.addEventListener('click', () => { chatPage.style.display = 'none'; titlePage.style.display = 'flex'; chatMessages.innerHTML = ''; });
@@ -174,11 +196,11 @@
                 chatPage.style.display = 'flex';
 
                 if (currentLang === 'ja') {
-                    document.getElementById('header-title').textContent = 'Kobe Foodie Friend';
+                    document.getElementById('header-title').textContent = 'Tabemon';
                     document.getElementById('header-status').textContent = 'オンライン • 気分で探す神戸グルメ';
                     chatInput.placeholder = '今の気分や感情を入力... (例: 疲れ気味, ご褒美)';
                 } else {
-                    document.getElementById('header-title').textContent = 'Kobe Foodie Friend';
+                    document.getElementById('header-title').textContent = 'Tabemon';
                     document.getElementById('header-status').textContent = 'Online • Match by your current vibe';
                     chatInput.placeholder = 'How do you feel? (e.g., worn out, treat myself)';
                 }
@@ -186,6 +208,7 @@
                 sendBotGreeting();
             }
 
+            // メッセージ送信イベント
             btnSend.addEventListener('click', handleUserSendMessage);
             chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserSendMessage(); });
 
@@ -221,10 +244,10 @@
                 let greetingText = "";
                 let chips = [];
                 if (currentLang === 'ja') {
-                    greetingText = "こんにちは！Kobe Foodie Friend へようこそ。\n今のあなたの気分や、お腹のすき具合はどんな感じですか？\n例えば、以下の感情キーワードから選ぶか、自由に入力してください！";
+                    greetingText = "こんにちは！Tabemon へようこそ。\n今のあなたの気分や、お腹のすき具合はどんな感じですか？\n例えば、以下の感情キーワードから選ぶか、自由に入力してください！";
                     chips = ["サクッと", "一人飯", "ご褒美", "刺激が欲しい", "しょんぼり", "疲れ気味"];
                 } else {
-                    greetingText = "Hello! Welcome to Kobe Foodie Friend.\nHow are you feeling right now? What is your vibe today?\nFeel free to type your emotion, or select one from below:";
+                    greetingText = "Hello! Welcome to Tabemon.\nHow are you feeling right now? What is your vibe today?\nFeel free to type your emotion, or select one from below:";
                     chips = ["worn out", "treat myself", "solo dining", "adventurous", "low energy", "sweet escape"];
                 }
 
@@ -248,6 +271,7 @@
                 addMessage(greetingText, 'bot', chipsContainer);
             }
 
+            // AI応答処理
             async function respondToUser(userInput) {
                 const loadingText = currentLang === 'ja' ? "AIが神戸の店舗を分析中" : "AI is analyzing Kobe restaurants";
                 const loadingDiv = addMessage(`<div class="ai-loading-bubble">${loadingText}<span class="loader-dots"><span>.</span><span>.</span><span>.</span></span></div>`, 'bot');
@@ -257,7 +281,7 @@
                     return `【ID: ${i+1}】\n店名: ${shop.Name}\nスタイル: ${shop.Style}\nカテゴリ: ${shop.Type}\n関連感情(日): ${shop.Feelings_JA}\n関連感情(英): ${shop.Feelings_EN}`;
                 }).join("\n---\n");
 
-                // ★ google.script.run を用いたGAS経由のセキュアなAPIコール
+                // google.script.run を用いたGAS経由のセキュアなAPIコール
                 google.script.run
                     .withSuccessHandler(function(responseText) {
                         loadingDiv.remove();
@@ -268,20 +292,33 @@
                             const matchedNames = parsedResponse.matchedShopNames || [];
                             let cardsDisplayed = 0;
 
+                            // 店名判定を優しくした処理（AI応答時）
                             matchedNames.forEach(shopName => {
-                                const foundShop = kobeShops.find(s => s.Name.toLowerCase() === shopName.trim().toLowerCase());
+                                const foundShop = kobeShops.find(s => {
+                                    const sName = (s.Name || '').trim().toLowerCase();
+                                    const rName = shopName.trim().toLowerCase();
+                                    return sName === rName || sName.includes(rName) || rName.includes(sName);
+                                });
+                                
                                 if (foundShop) {
                                     cardsDisplayed++;
                                     const cardDiv = document.createElement('div');
                                     cardDiv.className = 'shop-card';
                                     const badgeClass = `badge-${foundShop.Type.toLowerCase()}`;
+                                    
+                                    // 写真とマップの生成
+                                    const imageHtml = foundShop.ImageUrl ? `<img src="${foundShop.ImageUrl}" alt="Menu Photo" class="shop-image" onerror="this.style.display='none'">` : '';
+                                    const mapQuery = encodeURIComponent(foundShop.Name + " 神戸");
+                                    const mapHtml = `<iframe class="shop-map" src="https://maps.google.co.jp/maps?q=${mapQuery}&z=15&output=embed" allowfullscreen loading="lazy"></iframe>`;
 
                                     cardDiv.innerHTML = `
+                                        ${imageHtml}
                                         <span class="shop-type-badge ${badgeClass}">${foundShop.Type}</span>
                                         <h3 class="shop-name">${foundShop.Name}</h3>
                                         <p class="shop-style">${foundShop.Style}</p>
+                                        ${mapHtml}
                                         <a href="${foundShop.MapLink}" target="_blank" class="shop-link">
-                                            📍 Google Maps で見る →
+                                            📍 マップアプリで全画面で開く →
                                         </a>
                                     `;
                                     addMessage("", 'bot', cardDiv);
@@ -305,6 +342,7 @@
                     .callGemini(userInput, shopsContext);
             }
 
+            // フォールバック（API通信失敗時や該当なしの場合のローカル検索）
             function handleLocalFallback(userInput, isSilent = false) {
                 const query = userInput.toLowerCase().trim();
                 let matchedCategory = null;
@@ -350,19 +388,35 @@
                 }
 
                 topResults.forEach(shop => {
-                    const cardDiv = document.createElement('div');
-                    cardDiv.className = 'shop-card';
-                    const badgeClass = `badge-${shop.Type.toLowerCase()}`;
+                    // 店名判定を優しくした処理（ローカル検索時）
+                    const foundShop = kobeShops.find(s => {
+                        const sName = (s.Name || '').trim().toLowerCase();
+                        const rName = shop.Name.trim().toLowerCase();
+                        return sName === rName || sName.includes(rName) || rName.includes(sName);
+                    });
 
-                    cardDiv.innerHTML = `
-                        <span class="shop-type-badge ${badgeClass}">${shop.Type}</span>
-                        <h3 class="shop-name">${shop.Name}</h3>
-                        <p class="shop-style">${shop.Style}</p>
-                        <a href="${shop.MapLink}" target="_blank" class="shop-link">
-                            📍 Google Maps で見る →
-                        </a>
-                    `;
-                    addMessage("", 'bot', cardDiv);
+                    if (foundShop) {
+                        const cardDiv = document.createElement('div');
+                        cardDiv.className = 'shop-card';
+                        const badgeClass = `badge-${foundShop.Type.toLowerCase()}`;
+                        
+                        // 写真とマップの生成
+                        const imageHtml = foundShop.ImageUrl ? `<img src="${foundShop.ImageUrl}" alt="Menu Photo" class="shop-image" onerror="this.style.display='none'">` : '';
+                        const mapQuery = encodeURIComponent(foundShop.Name + " 神戸");
+                        const mapHtml = `<iframe class="shop-map" src="https://maps.google.co.jp/maps?q=${mapQuery}&z=15&output=embed" allowfullscreen loading="lazy"></iframe>`;
+
+                        cardDiv.innerHTML = `
+                            ${imageHtml}
+                            <span class="shop-type-badge ${badgeClass}">${foundShop.Type}</span>
+                            <h3 class="shop-name">${foundShop.Name}</h3>
+                            <p class="shop-style">${foundShop.Style}</p>
+                            ${mapHtml}
+                            <a href="${foundShop.MapLink}" target="_blank" class="shop-link">
+                                📍 マップアプリで全画面で開く →
+                            </a>
+                        `;
+                        addMessage("", 'bot', cardDiv);
+                    }
                 });
             }
         });
